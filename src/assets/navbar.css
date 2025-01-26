@@ -1,0 +1,41 @@
+.horizontal-menu {
+  border-bottom: 1px solid var(--default-border-color);
+}
+
+.ant-menu-item-selected {
+  color: var(--active-btn-border) !important;
+  border-bottom: 2px solid var(--active-btn-border);
+}
+.ant-menu-item-selected::after {
+  border: none;
+}
+.ant-menu-light.ant-menu-horizontal > .ant-menu-item:hover::after {
+  border: none;
+}
+:where(.css-dev-only-do-not-override-1htoz2s).ant-menu-light.ant-menu-horizontal
+  > .ant-menu-item-selected::after,
+:where(.css-dev-only-do-not-override-1htoz2s).ant-menu-light
+  > .ant-menu.ant-menu-horizontal
+  > .ant-menu-item-selected::after,
+:where(.css-dev-only-do-not-override-1htoz2s).ant-menu-light.ant-menu-horizontal
+  > .ant-menu-submenu-selected::after,
+:where(.css-dev-only-do-not-override-1htoz2s).ant-menu-light
+  > .ant-menu.ant-menu-horizontal
+  > .ant-menu-submenu-selected::after {
+  border: none;
+}
+.ant-menu-item-active:hover {
+  background-color: red;
+}
+.horizontal-menu {
+  border: none !important;
+}
+
+.nav-container {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  padding: 45px 128px 0 128px;
+  border-bottom: 1px solid var(--default-border-color);
+}
