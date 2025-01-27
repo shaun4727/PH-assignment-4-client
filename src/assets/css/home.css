@@ -1,3 +1,57 @@
 .home-page {
   margin: 15px 128px 0 128px;
 }
+
+/* tab style starts */
+:where(.css-dev-only-do-not-override-1htoz2s).ant-tabs
+  > .ant-tabs-nav
+  .ant-tabs-nav-wrap,
+:where(.css-dev-only-do-not-override-1htoz2s).ant-tabs
+  > div
+  > .ant-tabs-nav
+  .ant-tabs-nav-wrap {
+  position: relative;
+  display: flex;
+  flex: auto;
+  justify-content: end;
+  align-self: stretch;
+  overflow: hidden;
+  white-space: nowrap;
+  transform: translate(0);
+}
+
+:where(.css-dev-only-do-not-override-1htoz2s).ant-tabs .ant-tabs-tab:hover {
+  color: var(--active-btn-border);
+}
+
+.ant-tabs-tab-active {
+  border-bottom: none !important;
+}
+:where(.css-dev-only-do-not-override-1htoz2s).ant-tabs
+  .ant-tabs-tab.ant-tabs-tab-active
+  .ant-tabs-tab-btn {
+  color: var(--active-btn-border) !important;
+  text-shadow: 0 0 0.25px currentcolor;
+}
+
+:where(.css-dev-only-do-not-override-1htoz2s).ant-tabs
+  .ant-tabs-tab-btn:focus:not(:focus-visible),
+:where(.css-dev-only-do-not-override-1htoz2s).ant-tabs
+  .ant-tabs-tab-remove:focus:not(:focus-visible),
+:where(.css-dev-only-do-not-override-1htoz2s).ant-tabs .ant-tabs-tab-btn:active,
+:where(.css-dev-only-do-not-override-1htoz2s).ant-tabs
+  .ant-tabs-tab-remove:active {
+  color: #000;
+}
+
+:where(.css-dev-only-do-not-override-1htoz2s).ant-tabs .ant-tabs-ink-bar {
+  position: absolute;
+  background: var(--active-btn-border) !important;
+  pointer-events: none;
+}
+
+.ant-tabs-tab {
+  padding: 15px 25px !important;
+}
+
+/* tab style ends */

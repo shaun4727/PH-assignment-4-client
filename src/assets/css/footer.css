@@ -1,0 +1,37 @@
+:where(.css-dev-only-do-not-override-1htoz2s).ant-layout {
+  border-radius: 0px !important;
+  background-color: #fff;
+  border-top: 1px solid var(--default-border-color);
+}
+.footer-container {
+  margin: 0 128px;
+}
+
+.footer-row {
+  height: 200px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: flex-start;
+  line-height: 1;
+}
+.footer-row img {
+  width: 120px;
+}
+.footer-row h1 {
+  font-weight: 400;
+  background-color: var(--default-border-color);
+  width: 80%;
+  color: #fff;
+  text-align: center;
+  padding: 8px 20px;
+}
+.footer-row p {
+  margin: 5px 0;
+  font-weight: 500;
+}
+.footer-row .footer-title {
+  border-bottom: 1px solid var(--default-border-color);
+  width: 100%;
+  padding: 15px 0;
+}

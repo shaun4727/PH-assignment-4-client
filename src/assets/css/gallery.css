@@ -1,0 +1,23 @@
+.gallery-layout {
+  border-radius: 25px !important;
+}
+
+.gallery-image {
+  display: block;
+  border-radius: 25px;
+  height: 200px !important;
+  padding: 15px;
+}
+.gallery-container {
+  position: relative;
+  padding-top: 45px !important;
+}
+.gallery-title {
+  position: absolute;
+  top: -8%;
+  left: 43%;
+  background-color: var(--active-btn-border);
+  padding: 8px 25px;
+  border-radius: 25px;
+  color: #fff;
+}

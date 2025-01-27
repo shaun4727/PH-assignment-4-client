@@ -4,6 +4,9 @@ import Home from "../pages/Home";
 import About from "../pages/About";
 import AllProducts from "../pages/AllProducts";
 import { routeGenerator } from "../utils/routesGenerator";
+import ProductDetail from "../pages/ProductDetail";
+import CartView from "../pages/CartPage";
+import CheckoutPage from "../pages/CheckoutPage";
 
 export const paths = [
   {
@@ -23,12 +26,31 @@ export const paths = [
     element: <AllProducts />,
   },
 ];
+
 const router = createBrowserRouter([
   {
     path: "/",
     element: <App />,
     children: routeGenerator(paths),
   },
+  {
+    path: "/product/view-detail",
+    element: <App />,
+    children: [
+      {
+        index: true,
+        element: <ProductDetail />,
+      },
+      {
+        path: "view-cart",
+        element: <CartView />,
+      },
+      {
+        path: "checkout",
+        element: <CheckoutPage />,
+      },
+    ],
+  },
 ]);
-console.log("router", routeGenerator(paths));
+
 export default router;

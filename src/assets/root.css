@@ -1,4 +1,10 @@
 :root {
   --default-border-color: #d3d3d3;
   --active-btn-border: #9f0000;
+  --default-tag-color: #cb795f;
+}
+* {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+    "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji",
+    "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
 }

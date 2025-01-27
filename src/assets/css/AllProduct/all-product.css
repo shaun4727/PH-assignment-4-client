@@ -1,0 +1,21 @@
+.all-product-page {
+  margin: 15px 128px 0 128px;
+}
+
+.product-header {
+  display: flex;
+  align-items: center;
+  border-bottom: 1px solid var(--default-border-color);
+}
+
+.product-header .all-product-title {
+  flex-basis: 65%;
+}
+.product-header .search-field {
+  flex-basis: 35%;
+}
+.pagination-column {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 25px;
+}

@@ -9,10 +9,12 @@ export const routeGenerator = (items: TUserPath[]) => {
           element: item.element,
         });
       }
-      acc.push({
-        path: item.path,
-        element: item.element,
-      });
+      if (item.path) {
+        acc.push({
+          path: item.path,
+          element: item.element,
+        });
+      }
     }
 
     if (item.children) {

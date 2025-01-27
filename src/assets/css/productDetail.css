@@ -1,0 +1,30 @@
+.img-container {
+  display: flex;
+  justify-content: flex-start;
+}
+
+.product-img {
+  height: 300px;
+  width: 280px;
+  border: none;
+  border-radius: 0;
+}
+.price-category .stock-qty {
+  font-size: 16px;
+  font-weight: 600;
+  margin-left: 5px;
+}
+.product-details .writer-name {
+  font-size: 16px;
+  font-weight: 700;
+  color: cadetblue;
+}
+
+.product-details .product-description {
+  text-align: justify;
+}
+.similar-title {
+  margin-top: 125px;
+  border-bottom: 1px solid var(--default-border-color);
+  padding-bottom: 10px;
+}

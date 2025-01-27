@@ -1,0 +1,15 @@
+.about-page {
+  margin: 15px 128px 0 128px;
+}
+.description-section {
+  text-align: justify;
+}
+.description-section .website-name {
+  font-size: 16px;
+  font-weight: 700;
+}
+.description-section .list-header {
+  font-size: 14px;
+  font-weight: 600;
+  margin-right: 5px;
+}
