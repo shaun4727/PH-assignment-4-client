@@ -52,7 +52,7 @@ const Navbar: React.FC = () => {
           selectedKeys={[current]}
           mode="horizontal"
           items={navItems}
-          className="horizontal-menu"
+          className="horizontal-menu navigation-bar"
           style={{ display: "flex", justifyContent: "end" }}
         />
       </div>

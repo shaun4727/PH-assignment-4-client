@@ -1,0 +1,55 @@
+:where(.css-dev-only-do-not-override-1htoz2s).ant-layout {
+  border-top: 0px solid var(--default-border-color);
+}
+:where(.css-dev-only-do-not-override-1htoz2s).ant-menu-light
+  .ant-menu-item-selected,
+:where(.css-dev-only-do-not-override-1htoz2s).ant-menu-light
+  > .ant-menu
+  .ant-menu-item-selected {
+  background: #fff;
+}
+
+:where(.css-dev-only-do-not-override-1htoz2s).ant-menu-light
+  .ant-menu-submenu-selected
+  > .ant-menu-submenu-title,
+:where(.css-dev-only-do-not-override-1htoz2s).ant-menu-light
+  > .ant-menu
+  .ant-menu-submenu-selected
+  > .ant-menu-submenu-title {
+  color: #000;
+  font-weight: 600;
+}
+
+.order-history-status .order-status {
+  color: #275ae9;
+}
+.order-history-status ul {
+  list-style-type: none;
+  padding: 0 0 0 12px;
+  margin: 0;
+}
+.order-history-status ul li::marker {
+  content: "●"; /* Use a bullet character */
+  font-size: 1.5em; /* Adjust size */
+  color: #14d909; /* Customize color */
+}
+
+.checkout-summary .order-info {
+  display: flex;
+  justify-content: space-between;
+}
+.checkout-summary .order-info .order-title {
+  flex-basis: 50%;
+  padding: 13px 0;
+}
+.checkout-summary .order-info .order-date {
+  flex-basis: 50%;
+  padding: 13px 0;
+}
+
+.low-opacity {
+  opacity: 0.7;
+}
+.bold {
+  font-weight: 600;
+}

@@ -7,6 +7,9 @@ import { routeGenerator } from "../utils/routesGenerator";
 import ProductDetail from "../pages/ProductDetail";
 import CartView from "../pages/CartPage";
 import CheckoutPage from "../pages/CheckoutPage";
+import DashboardPage from "../pages/Dashboard";
+import OrderHistory from "../components/dashboard/orderHistory";
+import { BarsOutlined } from "@ant-design/icons";
 
 export const paths = [
   {
@@ -25,6 +28,20 @@ export const paths = [
     path: "all-products",
     element: <AllProducts />,
   },
+  {
+    name: "DASHBOARD",
+    path: "dashboard",
+    element: <DashboardPage />,
+  },
+];
+
+export const userPaths = [
+  {
+    name: "Order History",
+    path: "order-history",
+    icon: <BarsOutlined />,
+    element: <OrderHistory />,
+  },
 ];
 
 const router = createBrowserRouter([
@@ -33,6 +50,12 @@ const router = createBrowserRouter([
     element: <App />,
     children: routeGenerator(paths),
   },
+  {
+    path: "/dashboard",
+    element: <DashboardPage />,
+    children: routeGenerator(userPaths),
+  },
+
   {
     path: "/product/view-detail",
     element: <App />,

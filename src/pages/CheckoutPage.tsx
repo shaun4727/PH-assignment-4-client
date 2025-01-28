@@ -84,7 +84,11 @@ const CheckoutPage: React.FC = () => {
             <div className="checkout-section ">
               <Card
                 hoverable
-                style={{ width: 340, padding: "4px 20px 16px 20px" }}
+                style={{
+                  width: 340,
+                  padding: "0px 20px 16px 20px",
+                  margin: "0px",
+                }}
               >
                 <div className="checkout-summary">
                   <h3 className="title bottom-border">Checkout Summary</h3>
