@@ -1,7 +1,7 @@
-:where(.css-dev-only-do-not-override-1htoz2s).ant-layout {
+.footer-layout {
   border-radius: 0px !important;
   background-color: #fff;
-  border-top: 1px solid var(--default-border-color);
+  border-top: 1px solid var(--default-border-color) !important;
 }
 .footer-container {
   margin: 0 128px;

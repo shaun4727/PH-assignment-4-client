@@ -4,27 +4,27 @@ import TabCard from "./tabChild/tabCard";
 
 const tabListNoTitle = [
   {
-    key: "article",
-    label: "ARTICLE",
+    key: "Biography",
+    label: "BIOGRAPHY",
   },
   {
-    key: "app",
-    label: "APP",
+    key: "Education",
+    label: "EDUCATION",
   },
   {
-    key: "project",
-    label: "PROJECT",
+    key: "Mystery",
+    label: "MYSTERY",
   },
 ];
 
 const contentListNoTitle: Record<string, React.ReactNode> = {
-  article: <TabCard />,
-  app: <TabCard />,
-  project: <TabCard />,
+  Biography: <TabCard />,
+  Education: <TabCard />,
+  Mystery: <TabCard />,
 };
 
 const TabCom: React.FC = () => {
-  const [activeTabKey, setActiveTabKey] = useState<string>("app");
+  const [activeTabKey, setActiveTabKey] = useState<string>("Biography");
 
   const onTab2Change = (key: string) => {
     setActiveTabKey(key);
@@ -42,7 +42,12 @@ const TabCom: React.FC = () => {
           size: "middle",
         }}
       >
-        {contentListNoTitle[activeTabKey]}
+        {React.isValidElement(contentListNoTitle[activeTabKey]) &&
+          React.cloneElement(
+            contentListNoTitle[activeTabKey] as React.ReactElement,
+            { activeTabKey }
+          )}
+        {/* {contentListNoTitle[activeTabKey]} */}
       </Card>
     </>
   );

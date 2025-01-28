@@ -1,7 +1,6 @@
 import React from "react";
 import { Carousel } from "antd";
-import slider1 from "../../assets/images/slider-1.png";
-import slider2 from "../../assets/images/slider-2.png";
+import { useGetCarouselImagesQuery } from "../../redux/features/home/homeManagement.api";
 
 const contentStyle: React.CSSProperties = {
   margin: 0,
@@ -9,23 +8,23 @@ const contentStyle: React.CSSProperties = {
   color: "#fff",
   lineHeight: "160px",
   textAlign: "center",
-  background: "#364d79",
   width: "100%",
 };
 
 const CarouselCom: React.FC = () => {
-  const onChange = (currentSlide: number) => {
-    console.log(currentSlide);
-  };
+  // const onChange = (currentSlide: number) => {
+  //   console.log();
+  // };
+  const { data } = useGetCarouselImagesQuery(undefined);
 
+  // afterChange={onChange}
   return (
-    <Carousel afterChange={onChange}>
-      <div>
-        <img src={slider1} style={contentStyle} />
-      </div>
-      <div>
-        <img src={slider2} style={contentStyle} />
-      </div>
+    <Carousel autoplay={true} arrows={true}>
+      {data?.map((item, index) => (
+        <div key={index}>
+          <img src={item?.image} style={contentStyle} />
+        </div>
+      ))}
     </Carousel>
   );
 };

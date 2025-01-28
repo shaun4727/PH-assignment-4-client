@@ -1,138 +1,45 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Card, Button } from "antd";
-import cardImg from "../../../assets/images/tab-card/book.png";
 import "../../../assets/css/tabCard.css";
 import { NavLink } from "react-router-dom";
+import { useGetAllProductsQuery } from "../../../redux/features/home/homeManagement.api";
+import { TBook } from "../../../types";
 
-const TabCard: React.FC = () => (
-  <div className="cardContainer ">
-    <Card
-      className="card-item"
-      hoverable
-      cover={<img alt="example" src={cardImg} style={{ height: 140 }} />}
-    >
-      <h3>Book Name</h3>
-      <div className="price-category">
-        <h1 className="price">$199</h1>
-        <span className="category">Category</span>
-      </div>
-      <p className="description">
-        Many desktop publishing packages and web page editors now use Lorem
-        Ipsum as their default model text, and a search for 'lorem ipsum' will
-        uncover many web sites still in their
-      </p>
-      <div className="buy-section">
-        <Button className="buy-now">
-          <NavLink to={`/product/view-detail`}>View Detail</NavLink>
-        </Button>
-      </div>
-    </Card>
-    <Card
-      className="card-item"
-      hoverable
-      cover={<img alt="example" src={cardImg} style={{ height: 140 }} />}
-    >
-      <h3>Book Name</h3>
-      <div className="price-category">
-        <h1 className="price">$199</h1>
-        <span>Category</span>
-      </div>
-      <p className="description">
-        Many desktop publishing packages and web page editors now use Lorem
-        Ipsum as their default model text, and a search for 'lorem ipsum' will
-        uncover many web sites still in their
-      </p>
-      <div className="buy-section">
-        <Button className="buy-now">
-          <NavLink to={`/product/view-detail`}>View Detail</NavLink>
-        </Button>
-      </div>
-    </Card>
-    <Card
-      className="card-item"
-      hoverable
-      cover={<img alt="example" src={cardImg} style={{ height: 140 }} />}
-    >
-      <h3>Book Name</h3>
-      <div className="price-category">
-        <h1 className="price">$199</h1>
-        <span>Category</span>
-      </div>
-      <p className="description">
-        Many desktop publishing packages and web page editors now use Lorem
-        Ipsum as their default model text, and a search for 'lorem ipsum' will
-        uncover many web sites still in their
-      </p>
-      <div className="buy-section">
-        <Button className="buy-now">
-          <NavLink to={`/product/view-detail`}>View Detail</NavLink>
-        </Button>
-      </div>
-    </Card>
-    <Card
-      className="card-item"
-      hoverable
-      cover={<img alt="example" src={cardImg} style={{ height: 140 }} />}
-    >
-      <h3>Book Name</h3>
-      <div className="price-category">
-        <h1 className="price">$199</h1>
-        <span>Category</span>
-      </div>
-      <p className="description">
-        Many desktop publishing packages and web page editors now use Lorem
-        Ipsum as their default model text, and a search for 'lorem ipsum' will
-        uncover many web sites still in their
-      </p>
-      <div className="buy-section">
-        <Button className="buy-now">
-          <NavLink to={`/product/view-detail`}>View Detail</NavLink>
-        </Button>
-      </div>
-    </Card>
-    <Card
-      className="card-item"
-      hoverable
-      cover={<img alt="example" src={cardImg} style={{ height: 140 }} />}
-    >
-      <h3>Book Name</h3>
-      <div className="price-category">
-        <h1 className="price">$199</h1>
-        <span>Category</span>
-      </div>
-      <p className="description">
-        Many desktop publishing packages and web page editors now use Lorem
-        Ipsum as their default model text, and a search for 'lorem ipsum' will
-        uncover many web sites still in their
-      </p>
-      <div className="buy-section">
-        <Button className="buy-now">
-          <NavLink to={`/product/view-detail`}>View Detail</NavLink>
-        </Button>
-      </div>
-    </Card>
-    <Card
-      className="card-item"
-      hoverable
-      cover={<img alt="example" src={cardImg} style={{ height: 140 }} />}
-    >
-      <h3>Book Name</h3>
-      <div className="price-category">
-        <h1 className="price">$199</h1>
-        <span>Category</span>
-      </div>
-      <p className="description">
-        Many desktop publishing packages and web page editors now use Lorem
-        Ipsum as their default model text, and a search for 'lorem ipsum' will
-        uncover many web sites still in their
-      </p>
-      <div className="buy-section">
-        <Button className="buy-now">
-          <NavLink to={`/product/view-detail`}>View Detail</NavLink>
-        </Button>
-      </div>
-    </Card>
-  </div>
-);
+interface TabCardProps {
+  activeTabKey?: string;
+}
+const TabCard: React.FC<TabCardProps> = ({ activeTabKey }) => {
+  const [allBooks, setAllBooks] = useState<TBook[]>([]);
+  const { data } = useGetAllProductsQuery(undefined);
+
+  useEffect(() => {
+    setAllBooks(data?.filter((item) => item.category == activeTabKey) || []);
+  }, [activeTabKey, data]);
+
+  return (
+    <div className="cardContainer ">
+      {allBooks?.map((item, index) => (
+        <Card
+          key={index}
+          className="card-item"
+          hoverable
+          cover={<img alt="example" src={item.image} style={{ height: 140 }} />}
+        >
+          <h3>{item?.title}</h3>
+          <div className="price-category">
+            <h1 className="price">${item?.price}</h1>
+            <span className="category">{item?.category}</span>
+          </div>
+          <p className="description">{item?.description}</p>
+          <div className="buy-section">
+            <Button className="buy-now">
+              <NavLink to={`/product/view-detail`}>View Detail</NavLink>
+            </Button>
+          </div>
+        </Card>
+      ))}
+    </div>
+  );
+};
 
 export default TabCard;

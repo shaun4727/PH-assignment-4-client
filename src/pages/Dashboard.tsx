@@ -28,7 +28,10 @@ const DashboardPage: React.FC = () => {
                 items={navItems}
               />
             </Sider>
-            <Layout style={{ padding: "0 24px 24px" }}>
+            <Layout
+              style={{ padding: "0 24px 24px" }}
+              className="dashboard-order-history"
+            >
               <Content
                 style={{
                   padding: 24,

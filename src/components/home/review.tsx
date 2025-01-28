@@ -6,7 +6,7 @@ import quote from "../../assets/images/review/quotes-left.png";
 const ReviewCom: React.FC = () => (
   <>
     <h2 className="review-title">REVIEW</h2>
-    <Carousel arrows infinite={false} className="review-section">
+    <Carousel arrows infinite={false} className="review-section" dots={false}>
       <div className="review-item">
         <div className="review-content">
           <div className="quote-section">
