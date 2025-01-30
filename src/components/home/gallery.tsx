@@ -1,12 +1,14 @@
 import React from "react";
 import { Layout } from "antd";
 import "../../assets/css/gallery.css";
-import gallery1 from "../../assets/images/slider-1.png";
+import { useAppSelector } from "../../redux/hook";
 
 const { Content } = Layout;
 import { Col, Row, Image } from "antd";
 
 const Gallery: React.FC = () => {
+  const data = useAppSelector((state) => state.home.carousel);
+
   return (
     <Layout className="gallery-layout" style={{ marginTop: "65px" }}>
       <Content>
@@ -21,31 +23,17 @@ const Gallery: React.FC = () => {
         >
           <h2 className="gallery-title">GALLERY</h2>
           <Row gutter={16}>
-            <Col span={8} order={4} className="gutter-row">
-              <Image.PreviewGroup>
-                <Image width={350} src={gallery1} className="gallery-image" />
-              </Image.PreviewGroup>
-            </Col>
-            <Col span={8} order={3} className="gutter-row">
-              <Image.PreviewGroup>
-                <Image width={350} src={gallery1} className="gallery-image" />
-              </Image.PreviewGroup>
-            </Col>
-            <Col span={8} order={2} className="gutter-row">
-              <Image.PreviewGroup>
-                <Image width={350} src={gallery1} className="gallery-image" />
-              </Image.PreviewGroup>
-            </Col>
-            <Col span={8} order={1}>
-              <Image.PreviewGroup>
-                <Image width={350} src={gallery1} className="gallery-image" />
-              </Image.PreviewGroup>
-            </Col>
-            <Col span={8} order={1}>
-              <Image.PreviewGroup>
-                <Image width={350} src={gallery1} className="gallery-image" />
-              </Image.PreviewGroup>
-            </Col>
+            {data?.map((item, index) => (
+              <Col span={8} order={4} className="gutter-row" key={index}>
+                <Image.PreviewGroup>
+                  <Image
+                    width={350}
+                    src={item.image}
+                    className="gallery-image"
+                  />
+                </Image.PreviewGroup>
+              </Col>
+            ))}
           </Row>
         </div>
       </Content>

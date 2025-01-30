@@ -16,3 +16,7 @@
 .checkout-container .form-body-checkout {
   padding: 10px;
 }
+.form-body-checkout .ant-form-item-control-input-content {
+  display: flex !important;
+  justify-content: center !important;
+}

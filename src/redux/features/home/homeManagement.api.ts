@@ -13,7 +13,7 @@ const homeManagementApi = baseApi.injectEndpoints({
     }),
     getAllProducts: builder.query({
       query: () => ({
-        url: "/products",
+        url: "/products/tab-books",
         method: "GET",
       }),
       transformResponse: (response: TResponseRedux<TBook[]>) => response.data,

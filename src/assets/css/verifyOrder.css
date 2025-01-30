@@ -1,0 +1,17 @@
+.order-verify-page {
+  margin: 15px 128px 0 128px;
+}
+.order-card {
+  border: 1px solid var(--default-border-color);
+}
+.order-card .ant-card-head {
+  border-bottom: 1px solid var(--default-border-color) !important;
+}
+.order-card .title-value {
+  font-size: 14px;
+  font-weight: 400;
+}
+.order-card .header-title {
+  font-size: 20px;
+  font-weight: 700;
+}

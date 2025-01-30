@@ -6,38 +6,39 @@ import "../../assets/navbar.css";
 import logo from "../../assets/images/logo.png";
 import { navbarGenerator } from "../../utils/navbarGenerator";
 import { paths } from "../../routes/routes";
-import { MenuItem } from "../../types";
+import { TNavItem } from "../../types";
+import { useAppSelector } from "../../redux/hook";
 
-// type MenuItem = Required<MenuProps>["items"][number];
+const removeNavItem = (nav: string, navArr: TNavItem[]) => {
+  const index = navArr.findIndex((item) => item.name == nav);
 
-// const items: MenuItem[] = [
-//   {
-//     label: "HOME",
-//     key: "home",
-//     icon: "",
-//   },
-//   {
-//     label: "ABOUT US",
-//     key: "about",
-//     icon: "",
-//   },
-//   {
-//     label: "ALL PRODUCTS",
-//     key: "all-products",
-//     icon: "",
-//   },
-// ];
+  if (index > -1) {
+    navArr.splice(index, 1);
+  }
+};
 
 const Navbar: React.FC = () => {
-  const [current, setCurrent] = useState("mail");
-  const navItems: MenuItem[] = navbarGenerator(paths);
+  const NavArr = JSON.parse(JSON.stringify(paths));
+  const [current, setCurrent] = useState("HOME");
+  const token = useAppSelector((state) => state.auth.token);
+  const cartItems = useAppSelector((state) => state.cart.books);
+
+  if (token) {
+    removeNavItem("LOGIN", NavArr);
+  } else {
+    removeNavItem("DASHBOARD", NavArr);
+  }
+  const navItems: MenuProps["items"] = navbarGenerator(
+    NavArr,
+    "",
+    cartItems.length
+  );
 
   useEffect(() => {
     document.title = "Home"; // Set the title here
   }, []);
 
   const onClick: MenuProps["onClick"] = (e) => {
-    console.log("click ", e);
     setCurrent(e.key);
   };
 

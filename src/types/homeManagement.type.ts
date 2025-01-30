@@ -17,4 +17,5 @@ export type TBook = {
   inStock: boolean;
   createdAt: string;
   updatedAt: string;
+  qty?: number;
 };

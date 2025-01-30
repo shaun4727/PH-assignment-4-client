@@ -10,6 +10,12 @@ import CheckoutPage from "../pages/CheckoutPage";
 import DashboardPage from "../pages/Dashboard";
 import OrderHistory from "../components/dashboard/orderHistory";
 import { BarsOutlined } from "@ant-design/icons";
+import LoginPage from "../pages/Login";
+import ProtectedRoute from "../components/layout/ProtectedRoute";
+
+import SignUpPage from "../pages/SignUp";
+import ScrollToTop from "../components/layout/ScrollToTop";
+import VerifyOrder from "../pages/VerifyOrder";
 
 export const paths = [
   {
@@ -31,7 +37,21 @@ export const paths = [
   {
     name: "DASHBOARD",
     path: "dashboard",
-    element: <DashboardPage />,
+    element: (
+      <ProtectedRoute>
+        <DashboardPage />,
+      </ProtectedRoute>
+    ),
+  },
+  {
+    name: "LOGIN",
+    path: "login",
+    element: <LoginPage />,
+  },
+  {
+    name: "CART",
+    path: "view-cart",
+    element: <CartView />,
   },
 ];
 
@@ -52,8 +72,36 @@ const router = createBrowserRouter([
   },
   {
     path: "/dashboard",
-    element: <DashboardPage />,
+    element: (
+      <ProtectedRoute>
+        <DashboardPage />,
+      </ProtectedRoute>
+    ),
     children: routeGenerator(userPaths),
+  },
+  {
+    path: "/register",
+    element: <App />,
+    children: [
+      {
+        index: true,
+        element: <SignUpPage />,
+      },
+    ],
+  },
+  {
+    path: "/login",
+    element: <LoginPage />,
+  },
+  {
+    path: "/order/verify",
+    element: <App />,
+    children: [
+      {
+        index: true,
+        element: <VerifyOrder />,
+      },
+    ],
   },
 
   {
@@ -62,15 +110,20 @@ const router = createBrowserRouter([
     children: [
       {
         index: true,
-        element: <ProductDetail />,
+        element: (
+          <ScrollToTop>
+            <ProductDetail />
+          </ScrollToTop>
+        ),
       },
-      {
-        path: "view-cart",
-        element: <CartView />,
-      },
+
       {
         path: "checkout",
-        element: <CheckoutPage />,
+        element: (
+          <ProtectedRoute>
+            <CheckoutPage />
+          </ProtectedRoute>
+        ),
       },
     ],
   },

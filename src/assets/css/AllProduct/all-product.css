@@ -19,3 +19,12 @@
   justify-content: flex-end;
   margin-top: 25px;
 }
+.filter-btn {
+  width: 100%;
+}
+.product-header button {
+  background-color: var(--active-btn-border);
+}
+.product-header button:hover {
+  background-color: var(--active-btn-border) !important;
+}

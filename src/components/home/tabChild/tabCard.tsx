@@ -13,7 +13,8 @@ const TabCard: React.FC<TabCardProps> = ({ activeTabKey }) => {
   const { data } = useGetAllProductsQuery(undefined);
 
   useEffect(() => {
-    setAllBooks(data?.filter((item) => item.category == activeTabKey) || []);
+    const books = data?.filter((item) => item.category == activeTabKey);
+    setAllBooks(books || []);
   }, [activeTabKey, data]);
 
   return (
@@ -26,6 +27,9 @@ const TabCard: React.FC<TabCardProps> = ({ activeTabKey }) => {
           cover={<img alt="example" src={item.image} style={{ height: 140 }} />}
         >
           <h3>{item?.title}</h3>
+          <p>
+            by <span className="writer-name">{item?.author}</span>
+          </p>
           <div className="price-category">
             <h1 className="price">${item?.price}</h1>
             <span className="category">{item?.category}</span>
@@ -33,7 +37,9 @@ const TabCard: React.FC<TabCardProps> = ({ activeTabKey }) => {
           <p className="description">{item?.description}</p>
           <div className="buy-section">
             <Button className="buy-now">
-              <NavLink to={`/product/view-detail`}>View Detail</NavLink>
+              <NavLink to={`/product/view-detail`} state={item}>
+                View Detail
+              </NavLink>
             </Button>
           </div>
         </Card>

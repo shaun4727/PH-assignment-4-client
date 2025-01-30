@@ -1,51 +1,49 @@
 import { Button, Card, Col, Row } from "antd";
-import productImg from "../assets/images/tab-card/book.png";
 import "../assets/css/productDetail.css";
-import { NavLink } from "react-router-dom";
+import { NavLink, useLocation } from "react-router-dom";
 import { ShoppingCartOutlined } from "@ant-design/icons";
 import cardImg from "../assets/images/tab-card/book.png";
+import { useAppDispatch } from "../redux/hook";
+import { setCart } from "../redux/features/products/productSlice";
 
 const ProductDetail: React.FC = () => {
+  const location = useLocation();
+  const { image, title, author, price, category, quantity, description } =
+    location.state || {};
+
+  const dispatch = useAppDispatch();
+
+  const addToCart = () => {
+    dispatch(setCart({ ...location.state, qty: 1 }));
+  };
   return (
     <div className="home-page">
       <Row gutter={16}>
         <Col className="gutter-row" span={8}>
           <div className="img-container">
-            <img src={productImg} className="product-img" />
+            <img src={image} className="product-img" />
           </div>
         </Col>
         <Col className="gutter-row" span={16}>
           <div className="product-details">
-            <h2 className="book-name">Product Name</h2>
+            <h2 className="book-name">{title}</h2>
             <p>
-              by <span className="writer-name">Mr. Amazing writer</span>
+              by <span className="writer-name">{author}</span>
             </p>
 
             <div className="price-category">
-              <h2 className="price">$199</h2>
-              <span className="category">Category</span>
+              <h2 className="price">${price}</h2>
+              <span className="category">{category}</span>
               <p>
-                Stock: <span className="stock-qty">79</span>
+                Stock: <span className="stock-qty">{quantity}</span>
               </p>
-              <Button className="buy-now">
-                <NavLink to="/product/view-detail/view-cart">
-                  <ShoppingCartOutlined />
-                  Add To Cart
-                </NavLink>
+              <Button className="buy-now" onClick={addToCart}>
+                <ShoppingCartOutlined />
+                Add To Cart
               </Button>
             </div>
 
-            <p className="product-description">
-              Many desktop publishing packages and web page editors now use
-              Lorem Ipsum as their default model text, and a search for 'lorem
-              ipsum' will uncover many web sites still in their Many desktop
-              publishing packages and web page editors now use Lorem Ipsum as
-              their default model text, and a search for 'lorem ipsum' will
-              uncover many web sites still in their Many desktop publishing
-              packages and web page editors now use Lorem Ipsum as their default
-              model text, and a search for 'lorem ipsum' will uncover many web
-              sites still in their
-            </p>
+            <p className="product-description">{description}</p>
           </div>
         </Col>
       </Row>
