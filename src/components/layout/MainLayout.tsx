@@ -1,6 +1,8 @@
 import Navbar from "./Navbar";
 import { Outlet, useLocation } from "react-router-dom";
-import Footer from "../../components/footer";
+import FooterPage from "../../components/footer";
+import { Layout } from "antd";
+import "../../assets/css/rootLayout.css";
 
 const MainLayout = () => {
   const location = useLocation();
@@ -9,11 +11,11 @@ const MainLayout = () => {
   const shouldHideFooter = hideFooterRoutes.includes(location.pathname);
 
   return (
-    <div>
+    <Layout className="root-layout" style={{ background: "#fff" }}>
       <Navbar />
       <Outlet />
-      {!shouldHideFooter && <Footer />}
-    </div>
+      {!shouldHideFooter && <FooterPage />}
+    </Layout>
   );
 };
 

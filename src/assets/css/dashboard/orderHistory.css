@@ -1,0 +1,97 @@
+.checkout-section .checkout-card {
+  width: 100%;
+  display: block !important;
+}
+.checkout-summary.order-history-status > * {
+  margin: 0;
+  padding: 0;
+}
+.checkout-summary .order-info {
+  display: flex;
+  flex-direction: column;
+  padding: 0 7px;
+  margin-bottom: 5px;
+}
+.checkout-summary .order-info:hover {
+  background-color: rgba(0, 0, 0, 0.06);
+}
+.checkout-summary .title {
+  font-size: 19px;
+}
+.user-info h5 {
+  font-size: 16px;
+}
+.user-info .name {
+  opacity: 0.7;
+}
+.checkout-summary .active-row {
+  background-color: rgba(0, 0, 0, 0.06);
+}
+.order-date .low-opacity {
+  color: var(--active-btn-border);
+  font-weight: 600;
+}
+.order-date .low-opacity .date-value {
+  color: #000;
+}
+.order-info:last-child {
+  border: none;
+}
+.order-detail .top-level-order-detail .heading {
+  opacity: 0.7;
+}
+.order-detail .top-level-order-detail .status {
+  color: #188f67;
+}
+.order-detail .top-level-order-detail .value {
+  padding-left: 5px;
+}
+.order-detail .top-level-order-detail {
+  display: flex;
+  justify-content: space-between;
+}
+.order-detail .order-product-detail {
+  border-bottom: 1px solid var(--default-border-color) !important;
+  padding: 0 0 7px 0;
+}
+.order-detail .order-product-detail:last-child {
+  border: none !important;
+}
+.order-detail .order-product-detail .product-img {
+  margin-top: 8px;
+}
+.order-detail .order-product-detail h3 {
+  color: var(--active-btn-border);
+  margin: 0;
+  padding: 0;
+  padding-top: 5px;
+}
+.order-detail .order-product-detail .details .qty-price {
+  display: flex;
+  gap: 5px;
+}
+.order-detail .order-product-detail .details .qty-price h5 {
+  margin: 10px 0 5px 0;
+}
+
+.order-detail .order-product-detail .details .heading {
+  opacity: 0.7;
+}
+.order-detail .order-product-detail .details h5 > .value {
+  padding-left: 5px;
+}
+.order-detail .order-product-detail .details .category {
+  font-size: 12px;
+  background-color: var(--default-tag-color);
+  padding: 7px;
+  border-radius: 15px;
+  font-weight: 600;
+  max-height: 25px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  max-width: 100px;
+}
+.order-detail .order-product-detail .details {
+  padding-left: 8px;
+}

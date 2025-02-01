@@ -2,25 +2,39 @@
   display: flex;
   justify-content: center;
 }
-.login-card {
-  width: 40%;
-}
+
 .login-card h1 {
+  text-align: center;
+}
+
+.login-submit:hover {
+  color: var(--active-btn-border) !important;
+  border: 1px solid var(--active-btn-border) !important;
+}
+
+/* .login-card .login-form .ant-row {
+  width: 85%;
+} */
+
+.login-page h4 {
   text-align: center;
 }
 .login-submit {
   background-color: var(--active-btn-border);
   color: #fff;
 }
-.login-submit:hover {
-  color: var(--active-btn-border) !important;
-  border: 1px solid var(--active-btn-border) !important;
+.login-card {
+  width: 100% !important;
+  display: flex;
+  justify-content: center;
 }
+@media (min-width: 768px) {
+  .login-page .ant-card-body {
+    width: 500px;
+  }
 
-.login-card .login-form .ant-row {
-  width: 85%;
-}
-
-.login-page h4 {
-  text-align: center;
+  .login-page .ant-form-item-control-input-content {
+    display: flex;
+    justify-content: center;
+  }
 }

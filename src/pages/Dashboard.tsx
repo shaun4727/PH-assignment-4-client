@@ -1,53 +1,60 @@
 import React from "react";
 
 import type { MenuProps } from "antd";
-import { Layout, Menu, theme } from "antd";
+import { Col, Layout, Menu, Row } from "antd";
 import "../assets/css/dashboard/dashboard.css";
 import { Outlet } from "react-router-dom";
 import { navbarGenerator } from "../utils/navbarGenerator";
-import { userPaths } from "../routes/routes";
+import { userPaths, adminPaths } from "../routes/routes";
 import Navbar from "../components/layout/Navbar";
+import { useAppSelector } from "../redux/hook";
+import { USER_ROLE } from "../utils/userRole";
+import { TUser } from "../types";
 
-const { Content, Sider } = Layout;
+const getSidebarItems = (user: TUser) => {
+  if (user.role == USER_ROLE.user) {
+    const navItems: MenuProps["items"] = navbarGenerator(
+      userPaths,
+      "dashboard"
+    );
+    return navItems;
+  }
+  const navItems: MenuProps["items"] = navbarGenerator(adminPaths, "dashboard");
+  return navItems;
+};
 
 const DashboardPage: React.FC = () => {
-  const navItems: MenuProps["items"] = navbarGenerator(userPaths, "dashboard");
-  const {
-    token: { colorBgContainer, borderRadiusLG },
-  } = theme.useToken();
+  const user = useAppSelector((state) => state.auth.user);
+  const sidebarItems = getSidebarItems(user as TUser);
+
   return (
-    <div>
-      <Navbar />
-      <div className="home-page">
-        <Layout className="dashboard-layout">
-          <Layout>
-            <Sider width={200} style={{ background: colorBgContainer }}>
-              <Menu
-                mode="inline"
-                style={{ height: "100%", borderRight: 0 }}
-                items={navItems}
-              />
-            </Sider>
-            <Layout
-              style={{ padding: "0 24px 24px" }}
-              className="dashboard-order-history"
-            >
-              <Content
-                style={{
-                  padding: 24,
-                  margin: 0,
-                  minHeight: 280,
-                  background: colorBgContainer,
-                  borderRadius: borderRadiusLG,
-                }}
-              >
-                <Outlet />
-              </Content>
-            </Layout>
-          </Layout>
-        </Layout>
-      </div>
-    </div>
+    <>
+      <Layout className="dashboard-layout root-layout">
+        <Navbar />
+
+        <Row gutter={[16, 16]}>
+          <Col xs={24} sm={24} md={8} lg={4} xl={4} className="gutter-row">
+            {" "}
+            <Menu
+              mode="inline"
+              defaultSelectedKeys={["Order History"]}
+              style={{ height: "100%", borderRight: 0 }}
+              items={sidebarItems}
+            />
+          </Col>
+          <Col
+            xs={24}
+            sm={24}
+            md={16}
+            lg={20}
+            xl={20}
+            className="gutter-row dashboard-order-history"
+          >
+            <Outlet />
+          </Col>
+        </Row>
+      </Layout>
+    </>
   );
 };
 

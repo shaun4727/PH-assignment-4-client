@@ -1,13 +1,16 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect } from "react";
+// import React, { useState, useEffect } from "react";
 
 import type { MenuProps } from "antd";
-import { Menu } from "antd";
+import { Layout, Menu } from "antd";
 import "../../assets/navbar.css";
 import logo from "../../assets/images/logo.png";
 import { navbarGenerator } from "../../utils/navbarGenerator";
 import { paths } from "../../routes/routes";
 import { TNavItem } from "../../types";
 import { useAppSelector } from "../../redux/hook";
+
+const { Header } = Layout;
 
 const removeNavItem = (nav: string, navArr: TNavItem[]) => {
   const index = navArr.findIndex((item) => item.name == nav);
@@ -19,7 +22,7 @@ const removeNavItem = (nav: string, navArr: TNavItem[]) => {
 
 const Navbar: React.FC = () => {
   const NavArr = JSON.parse(JSON.stringify(paths));
-  const [current, setCurrent] = useState("HOME");
+  // const [current, setCurrent] = useState("HOME");
   const token = useAppSelector((state) => state.auth.token);
   const cartItems = useAppSelector((state) => state.cart.books);
 
@@ -39,24 +42,25 @@ const Navbar: React.FC = () => {
   }, []);
 
   const onClick: MenuProps["onClick"] = (e) => {
-    setCurrent(e.key);
+    // setCurrent(e.key);
+    console.log(e);
   };
 
   return (
     <>
-      <div className="nav-container">
-        <div>
-          <img src={logo} />
-        </div>
+      <Header
+        className="nav-header"
+        style={{ display: "flex", alignItems: "center" }}
+      >
+        <img src={logo} />
         <Menu
-          onClick={onClick}
-          selectedKeys={[current]}
           mode="horizontal"
+          onClick={onClick}
+          defaultSelectedKeys={["2"]}
           items={navItems}
-          className="horizontal-menu navigation-bar"
-          style={{ display: "flex", justifyContent: "end" }}
+          style={{ flex: 1, minWidth: 0, justifyContent: "end" }}
         />
-      </div>
+      </Header>
     </>
   );
 };

@@ -17,8 +17,10 @@ import { NavLink } from "react-router-dom";
 import { useState } from "react";
 import { useGetAllProductProductPageQuery } from "../redux/features/all-product/allProductManagement.api";
 import { TQueryParam, FilterQuery } from "../types";
+import { useFooterObserver } from "../components/layout/FooterObserverContext";
 
 function AllProducts() {
+  const { isFooterVisible } = useFooterObserver();
   type SearchProps = GetProps<typeof Input.Search>;
   const [params, setParams] = useState<TQueryParam[]>([]);
   const [priceRange, setPriceRange] = useState<number[]>([50, 400]);
@@ -107,50 +109,90 @@ function AllProducts() {
   return (
     <>
       <div className="all-product-page">
-        <Row gutter={{ xs: 8, sm: 16, md: 24, lg: 32 }}>
-          <Col span={6}>
-            <Affix offsetTop={20}>
-              <div className="filter-container">
-                <Form form={form} layout="vertical">
-                  <Form.Item label="Price">
-                    <Row>
-                      <Col span={12} className="gutter-row">
-                        <Slider
-                          range
-                          min={20}
-                          max={1000}
-                          defaultValue={priceRange}
-                          onChange={onChangeRange}
-                        />
-                      </Col>
-                    </Row>
-                  </Form.Item>
-                  <Form.Item label="Writer">
-                    <Input
-                      placeholder="Enter writer name"
-                      onChange={onChangeWriter}
-                    />
-                  </Form.Item>
-                  <Form.Item label="Category">
-                    <Input
-                      placeholder="Enter category name"
-                      onChange={onChangeCategory}
-                    />
-                  </Form.Item>
-                  <Form.Item>
-                    <Button
-                      className="buy-now filter-btn"
-                      onClick={onFilterQuery}
-                    >
-                      Filter
-                    </Button>
-                  </Form.Item>
-                </Form>
-              </div>
-            </Affix>
+        <Row gutter={[16, 16]}>
+          <Col xs={24} sm={24} md={8} lg={6} xl={6} className="gutter-row">
+            {!isFooterVisible && (
+              <Affix offsetTop={20} className="affix-filter">
+                <div className="filter-container">
+                  <Form form={form} layout="vertical">
+                    <Form.Item label="Price">
+                      <Row>
+                        <Col span={12} className="gutter-row">
+                          <Slider
+                            range
+                            min={20}
+                            max={1000}
+                            defaultValue={priceRange}
+                            onChange={onChangeRange}
+                          />
+                        </Col>
+                      </Row>
+                    </Form.Item>
+                    <Form.Item label="Writer">
+                      <Input
+                        placeholder="Enter writer name"
+                        onChange={onChangeWriter}
+                      />
+                    </Form.Item>
+                    <Form.Item label="Category">
+                      <Input
+                        placeholder="Enter category name"
+                        onChange={onChangeCategory}
+                      />
+                    </Form.Item>
+                    <Form.Item>
+                      <Button
+                        className="buy-now filter-btn"
+                        onClick={onFilterQuery}
+                      >
+                        Filter
+                      </Button>
+                    </Form.Item>
+                  </Form>
+                </div>
+              </Affix>
+            )}
+
+            <div className="filter-container filter-out-affix">
+              <Form form={form} layout="vertical">
+                <Form.Item label="Price">
+                  <Row>
+                    <Col span={12} className="gutter-row">
+                      <Slider
+                        range
+                        min={20}
+                        max={1000}
+                        defaultValue={priceRange}
+                        onChange={onChangeRange}
+                      />
+                    </Col>
+                  </Row>
+                </Form.Item>
+                <Form.Item label="Writer">
+                  <Input
+                    placeholder="Enter writer name"
+                    onChange={onChangeWriter}
+                  />
+                </Form.Item>
+                <Form.Item label="Category">
+                  <Input
+                    placeholder="Enter category name"
+                    onChange={onChangeCategory}
+                  />
+                </Form.Item>
+                <Form.Item>
+                  <Button
+                    className="buy-now filter-btn"
+                    onClick={onFilterQuery}
+                  >
+                    Filter
+                  </Button>
+                </Form.Item>
+              </Form>
+            </div>
           </Col>
-          <Col span={18}>
-            <Row gutter={{ xs: 8, sm: 16, md: 24, lg: 32 }}>
+          <Col xs={24} sm={24} md={16} lg={18} xl={18}>
+            <Row gutter={[16, 16]}>
               <Col className="gutter-row" span={24}>
                 <div className="product-header">
                   <h2 className="all-product-title">All Products</h2>
@@ -163,7 +205,15 @@ function AllProducts() {
                 </div>
               </Col>
               {data?.data?.map((item, index) => (
-                <Col className="gutter-row" span={8} key={index}>
+                <Col
+                  className="gutter-row"
+                  xs={24}
+                  sm={24}
+                  md={12}
+                  lg={8}
+                  xl={8}
+                  key={index}
+                >
                   <Card
                     className="card-item"
                     hoverable

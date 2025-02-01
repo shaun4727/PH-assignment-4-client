@@ -9,13 +9,14 @@ import CartView from "../pages/CartPage";
 import CheckoutPage from "../pages/CheckoutPage";
 import DashboardPage from "../pages/Dashboard";
 import OrderHistory from "../components/dashboard/orderHistory";
-import { BarsOutlined } from "@ant-design/icons";
+import { BarsOutlined, LogoutOutlined } from "@ant-design/icons";
 import LoginPage from "../pages/Login";
 import ProtectedRoute from "../components/layout/ProtectedRoute";
 
 import SignUpPage from "../pages/SignUp";
 import ScrollToTop from "../components/layout/ScrollToTop";
 import VerifyOrder from "../pages/VerifyOrder";
+import LogoutPage from "../pages/Logout";
 
 export const paths = [
   {
@@ -61,6 +62,33 @@ export const userPaths = [
     path: "order-history",
     icon: <BarsOutlined />,
     element: <OrderHistory />,
+  },
+  {
+    name: "Logout",
+    path: "logout",
+    icon: <LogoutOutlined />,
+    element: <LogoutPage />,
+  },
+];
+
+export const adminPaths = [
+  {
+    name: "Manage Products",
+    path: "manage-products",
+    icon: <BarsOutlined />,
+    element: <OrderHistory />,
+  },
+  {
+    name: "View Orders",
+    path: "view-orders",
+    icon: <BarsOutlined />,
+    element: <OrderHistory />,
+  },
+  {
+    name: "Logout",
+    path: "logout",
+    icon: <LogoutOutlined />,
+    element: <LogoutPage />,
   },
 ];
 

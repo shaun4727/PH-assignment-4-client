@@ -55,18 +55,29 @@ export type TAuthState = {
   user: null | TUser;
   token: null | string;
 };
-
+type TProductData = {
+  title: string;
+  author: string;
+  category: string;
+  image: string;
+};
 export type TProduct = {
-  product: string; // String if not directly using ObjectId type from mongoose
+  product: TProductData | string; // String if not directly using ObjectId type from mongoose
   quantity: number;
   price: number;
 };
-export type TOrderSchema = {
+export interface TOrderSchema {
   products: TProduct[];
   user: string;
   totalPrice: number;
   objectTwo: TCustomerDetails;
-};
+  status?: string;
+}
+
+export interface TOrderSchemaWithId extends TOrderSchema {
+  _id: string;
+  createdAt: string;
+}
 export type TCustomerDetails = {
   customer_email: string;
   customer_name: string;

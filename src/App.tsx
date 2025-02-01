@@ -1,10 +1,12 @@
 import MainLayout from "./components/layout/MainLayout";
 import "./assets/root.css";
-
+import { FooterObserverProvider } from "./components/layout/FooterObserverContext";
 function App() {
   return (
     <>
-      <MainLayout />
+      <FooterObserverProvider>
+        <MainLayout />
+      </FooterObserverProvider>
     </>
   );
 }

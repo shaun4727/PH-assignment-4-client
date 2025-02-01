@@ -1,5 +1,9 @@
 import { baseApi } from "../../api/baseApi";
-import { TOrderSchema } from "../../../types";
+import {
+  TOrderSchema,
+  TOrderSchemaWithId,
+  TResponseRedux,
+} from "../../../types";
 
 const orderApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({
@@ -17,7 +21,24 @@ const orderApi = baseApi.injectEndpoints({
         method: "GET",
       }),
     }),
+    getOrders: builder.query({
+      query: () => {
+        return {
+          url: "/orders",
+          method: "GET",
+        };
+      },
+      transformResponse: (response: TResponseRedux<TOrderSchemaWithId[]>) => {
+        return {
+          data: response.data,
+        };
+      },
+    }),
   }),
 });
 
-export const { useCreateOrderMutation, useVerifyOrderQuery } = orderApi;
+export const {
+  useCreateOrderMutation,
+  useVerifyOrderQuery,
+  useGetOrdersQuery,
+} = orderApi;
