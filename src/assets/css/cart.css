@@ -5,6 +5,7 @@
   display: flex;
   gap: 5px;
   justify-content: flex-start;
+  align-items: center;
 }
 .price-container {
   height: 100%;
@@ -43,4 +44,15 @@
 .checkout-summary .checkout-btn {
   width: 100%;
   margin-top: 25px;
+}
+.cart-page .cart-container .icon {
+  opacity: 1;
+  border: 1px dotted var(--active-btn-border);
+  padding: 9px;
+  border-radius: 50%;
+  width: 35px;
+  height: 35px;
+  display: flex;
+  align-items: center;
+  cursor: pointer;
 }

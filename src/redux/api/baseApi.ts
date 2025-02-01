@@ -67,18 +67,10 @@ const baseQueryWithRefreshToken: BaseQueryFn<
   return result;
 };
 
-// export const baseApi = createApi({
-//   reducerPath: "baseApi",
-//   baseQuery: fetchBaseQuery({
-//     baseUrl: "http://localhost:3000/api",
-//     credentials: "include",
-//   }),
-
-//   endpoints: () => ({}),
-// });
-
 export const baseApi = createApi({
   reducerPath: "baseApi",
   baseQuery: baseQueryWithRefreshToken,
   endpoints: () => ({}),
+
+  tagTypes: ["orders", "products"],
 });

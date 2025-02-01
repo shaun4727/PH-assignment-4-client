@@ -1,7 +1,7 @@
 import { Button, Card, Col, Input, Row } from "antd";
 import productImg from "../assets/images/tab-card/book.png";
 import "../assets/css/cart.css";
-import { MinusOutlined, PlusOutlined } from "@ant-design/icons";
+import { DeleteOutlined, MinusOutlined, PlusOutlined } from "@ant-design/icons";
 import { NavLink } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../redux/hook";
 import { TBook } from "../types";
@@ -9,6 +9,7 @@ import { setCheckoutSummary } from "../redux/features/checkout/checkoutSlice";
 import {
   incrementProduct,
   decrementProduct,
+  deleteCartItem,
 } from "../redux/features/products/productSlice";
 import { useState } from "react";
 
@@ -30,7 +31,10 @@ const CartView: React.FC = () => {
   const decrement = (id: string) => {
     dispatch(decrementProduct(id));
   };
-
+  // deleteCartItem
+  const deleteBook = (id: string) => {
+    dispatch(deleteCartItem(id));
+  };
   const getTotal = (item: TBook) => {
     return (Number(item?.qty) * Number(item?.price))?.toFixed(2);
   };
@@ -66,6 +70,9 @@ const CartView: React.FC = () => {
         <Row gutter={16} key={index}>
           <Col className="gutter-row" span={16}>
             <div className="cart-container">
+              <span className="icon" onClick={() => deleteBook(item._id)}>
+                <DeleteOutlined style={{ color: "#9f0000" }} />
+              </span>
               <img src={productImg} className="cart-img" />
               <div className="product-details">
                 <h2 className="book-name">{item?.title}</h2>

@@ -1,0 +1,329 @@
+import {
+  Button,
+  Col,
+  Drawer,
+  Form,
+  FormProps,
+  Input,
+  Row,
+  Select,
+  Space,
+  Table,
+  TableProps,
+  Tag,
+  Upload,
+  UploadProps,
+} from "antd";
+import React, { useState } from "react";
+import { useGetAllProductProductPageQuery } from "../../redux/features/all-product/allProductManagement.api";
+import { TBook } from "../../types";
+import { PlusOutlined, UploadOutlined } from "@ant-design/icons";
+import type { UploadRequestOption as RcCustomRequestOptions } from "rc-upload/lib/interface";
+import { useCreateProductMutation } from "../../redux/features/products/product.api";
+import { RcFile } from "antd/es/upload";
+
+interface DataType {
+  _id: string;
+  title: string;
+  author: string;
+  price: string;
+  category: string;
+  quantity: number;
+  image: string;
+  inStock: boolean;
+  description: string;
+  createdAt: string;
+  updatedAt: string;
+  reviews: string[];
+}
+
+const columns: TableProps<DataType>["columns"] = [
+  {
+    title: "Book",
+    dataIndex: "book",
+    key: "1",
+    render: (_, { title, author }) => (
+      <div>
+        <h4 style={{ margin: 0, padding: 0 }}>{title}</h4>by{" "}
+        <span style={{ fontWeight: 600, color: "#188f67" }}>{author}</span>
+      </div>
+    ),
+  },
+  {
+    title: "Price",
+    dataIndex: "price",
+    key: "2",
+  },
+  {
+    title: "Category",
+    dataIndex: "category",
+    key: "3",
+    render: (_, { category }) => (
+      <>
+        {
+          <Tag color={"#cb795f"} key={category}>
+            {category}
+          </Tag>
+        }
+      </>
+    ),
+  },
+  {
+    title: "Quantity",
+    key: "4",
+    dataIndex: "quantity",
+  },
+  {
+    title: "Instock",
+    key: "5",
+    dataIndex: "inStock",
+    render: (_, { inStock }) => <>{inStock ? "YES" : "NO"}</>,
+  },
+  {
+    title: "Action",
+    key: "6",
+    render: () => (
+      <Space size="middle">
+        <Button color="default" variant="dashed">
+          Delete
+        </Button>
+        <Button color="primary" variant="dashed">
+          Update
+        </Button>
+      </Space>
+    ),
+  },
+];
+let dataTable;
+const { Option } = Select;
+
+const MangeProducts: React.FC = () => {
+  const { data } = useGetAllProductProductPageQuery([
+    { name: "dashboard", value: "dashboard" },
+  ]);
+  type FieldType = {
+    title: string;
+    author: string;
+    price: number;
+    category: string;
+    quantity: number;
+    image?: string | { file: RcFile };
+    description: string;
+  };
+
+  const [createProduct] = useCreateProductMutation();
+
+  dataTable = data?.data || [];
+  const [open, setOpen] = useState(false);
+  const showDrawer = () => {
+    setOpen(true);
+  };
+
+  const onClose = () => {
+    setOpen(false);
+  };
+
+  const onFinish: FormProps<FieldType>["onFinish"] = async (values) => {
+    try {
+      let fileName;
+      if (typeof values.image != "string") {
+        fileName = values?.image?.file;
+        delete values["image"];
+      }
+      const formValues = {
+        ...values,
+        price: Number(values.price),
+        quantity: Number(values.quantity),
+        inStock: true,
+      };
+      const formData = {
+        file: JSON.stringify(fileName),
+        data: JSON.stringify(formValues),
+      };
+
+      await createProduct(formData).unwrap;
+      onClose();
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  const onFinishFailed: FormProps<FieldType>["onFinishFailed"] = (
+    errorInfo
+  ) => {
+    console.log("Failed:", errorInfo);
+  };
+
+  const fileUpload = async (options: RcCustomRequestOptions) => {
+    const { file, onSuccess } = options;
+    const formData = new FormData();
+
+    formData.append("file", file as RcFile);
+    try {
+      if (onSuccess) {
+        onSuccess("ok");
+      }
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  const props: UploadProps = {
+    name: "file",
+    customRequest: fileUpload,
+    fileList: [],
+    onChange(info) {
+      if (info.file.status !== "uploading") {
+        console.log(info.file, info.fileList);
+      }
+      if (info.file.status === "done") {
+        console.log(` file uploaded successfully`);
+      } else if (info.file.status === "error") {
+        console.log(` file upload failed.`);
+      }
+    },
+  };
+  return (
+    <>
+      <Table<DataType>
+        columns={columns}
+        dataSource={dataTable as readonly TBook[]}
+        rowKey="_id"
+      />
+      <Button className="buy-now" onClick={showDrawer} icon={<PlusOutlined />}>
+        Create New
+      </Button>
+      <Drawer
+        title="Create a new account"
+        width={720}
+        onClose={onClose}
+        open={open}
+        styles={{
+          body: {
+            paddingBottom: 80,
+          },
+        }}
+        // extra={
+        //   <Space>
+        //     <Button onClick={onClose}>Cancel</Button>
+        //   </Space>
+        // }
+      >
+        <Form
+          layout="vertical"
+          hideRequiredMark
+          onFinish={onFinish}
+          onFinishFailed={onFinishFailed}
+        >
+          <Row gutter={16}>
+            <Col span={12}>
+              <Form.Item<FieldType>
+                name="title"
+                label="Title"
+                rules={[
+                  { required: true, message: "Please enter product name" },
+                ]}
+              >
+                <Input placeholder="Please enter product name" />
+              </Form.Item>
+            </Col>
+            <Col span={12}>
+              <Form.Item<FieldType>
+                name="author"
+                label="Author"
+                rules={[
+                  { required: true, message: "Please enter author name" },
+                ]}
+              >
+                <Input placeholder="Please enter author name" />
+              </Form.Item>
+            </Col>
+          </Row>
+          <Row gutter={16}>
+            <Col span={12}>
+              <Form.Item<FieldType>
+                name="price"
+                label="Price"
+                rules={[{ required: true, message: "Please enter price" }]}
+              >
+                <Input placeholder="Please enter price" />
+              </Form.Item>
+            </Col>
+            <Col span={12}>
+              <Form.Item<FieldType>
+                name="category"
+                label="Category"
+                rules={[
+                  { required: true, message: "Please choose the category" },
+                ]}
+              >
+                <Select placeholder="Please choose the type">
+                  <Option value="Fiction">Fiction</Option>
+                  <Option value="Science">Science</Option>
+                  <Option value="Technology">Technology</Option>
+                  <Option value="Education">Education</Option>
+                  <Option value="Adventure">Adventure</Option>
+                  <Option value="Mystery">Mystery</Option>
+                  <Option value="Self-Help">Self-Help</Option>
+                  <Option value="Fantasy">Fantasy</Option>
+                  <Option value="History">History</Option>
+                  <Option value="Biography">Biography</Option>
+                </Select>
+              </Form.Item>
+            </Col>
+          </Row>
+          <Row gutter={16}>
+            <Col span={12}>
+              <Form.Item<FieldType>
+                name="quantity"
+                label="Quantity"
+                rules={[{ required: true, message: "Please enter quantity" }]}
+              >
+                <Input placeholder="Please enter quantity" />
+              </Form.Item>
+            </Col>
+            <Col span={12}>
+              <Form.Item<FieldType>
+                name="image"
+                label="Image"
+                rules={[
+                  { required: true, message: "Please choose the dateTime" },
+                ]}
+              >
+                <Upload {...props}>
+                  <Button icon={<UploadOutlined />}>Upload</Button>
+                </Upload>
+              </Form.Item>
+            </Col>
+          </Row>
+          <Row gutter={16}>
+            <Col span={24}>
+              <Form.Item<FieldType>
+                name="description"
+                label="Description"
+                rules={[
+                  {
+                    required: true,
+                    message: "please enter url description",
+                  },
+                ]}
+              >
+                <Input.TextArea
+                  rows={4}
+                  placeholder="please enter url description"
+                />
+              </Form.Item>
+              <Form.Item label={null}>
+                <Button className="login-submit" htmlType="submit">
+                  Submit
+                </Button>
+              </Form.Item>
+            </Col>
+          </Row>
+        </Form>
+      </Drawer>
+    </>
+  );
+};
+
+export default MangeProducts;

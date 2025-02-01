@@ -32,7 +32,7 @@ const ProductDetail: React.FC = () => {
             </p>
 
             <div className="price-category">
-              <h2 className="price">${price}</h2>
+              <h2 className="price">BDT {price}</h2>
               <span className="category">{category}</span>
               <p>
                 Stock: <span className="stock-qty">{quantity}</span>
@@ -61,7 +61,7 @@ const ProductDetail: React.FC = () => {
           >
             <h3>Book Name</h3>
             <div className="price-category">
-              <h1 className="price">$199</h1>
+              <h1 className="price">BDT 199</h1>
               <span>Category</span>
             </div>
             <p className="description">

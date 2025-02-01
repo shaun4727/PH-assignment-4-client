@@ -17,6 +17,20 @@ import SignUpPage from "../pages/SignUp";
 import ScrollToTop from "../components/layout/ScrollToTop";
 import VerifyOrder from "../pages/VerifyOrder";
 import LogoutPage from "../pages/Logout";
+import MangeProducts from "../components/dashboard/ManageProducts";
+import { store } from "../redux/store"; // Import the store directly
+import { RootState } from "../redux/store"; // Import RootState type for correct typings
+import { USER_ROLE } from "../utils/userRole";
+
+export const fetchUserData = (): RootState => {
+  const state: RootState = store.getState(); // Typed state
+  const user = state;
+
+  console.log("User from state:", user);
+
+  // Perform operations based on the state
+  return user;
+};
 
 export const paths = [
   {
@@ -73,17 +87,18 @@ export const userPaths = [
 
 export const adminPaths = [
   {
-    name: "Manage Products",
-    path: "manage-products",
+    name: "View Orders",
+    path: "order-history",
     icon: <BarsOutlined />,
     element: <OrderHistory />,
   },
   {
-    name: "View Orders",
-    path: "view-orders",
+    name: "Products",
+    path: "manage-products",
     icon: <BarsOutlined />,
-    element: <OrderHistory />,
+    element: <MangeProducts />,
   },
+
   {
     name: "Logout",
     path: "logout",
@@ -91,6 +106,14 @@ export const adminPaths = [
     element: <LogoutPage />,
   },
 ];
+
+const getRouteItems = () => {
+  const user = fetchUserData().auth.user;
+  if (user && user.role == USER_ROLE.user) {
+    return routeGenerator(userPaths);
+  }
+  return routeGenerator(adminPaths);
+};
 
 const router = createBrowserRouter([
   {
@@ -105,7 +128,7 @@ const router = createBrowserRouter([
         <DashboardPage />,
       </ProtectedRoute>
     ),
-    children: routeGenerator(userPaths),
+    children: getRouteItems(),
   },
   {
     path: "/register",

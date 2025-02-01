@@ -68,7 +68,7 @@ export type TProduct = {
 };
 export interface TOrderSchema {
   products: TProduct[];
-  user: string;
+  user: string | TUser;
   totalPrice: number;
   objectTwo: TCustomerDetails;
   status?: string;

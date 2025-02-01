@@ -17,6 +17,7 @@ const homeManagementApi = baseApi.injectEndpoints({
         method: "GET",
       }),
       transformResponse: (response: TResponseRedux<TBook[]>) => response.data,
+      providesTags: ["products"],
     }),
   }),
 });

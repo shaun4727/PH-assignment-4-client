@@ -42,11 +42,14 @@ const TabCom: React.FC = () => {
           size: "middle",
         }}
       >
-        {React.isValidElement(contentListNoTitle[activeTabKey]) &&
-          React.cloneElement(
-            contentListNoTitle[activeTabKey] as React.ReactElement,
-            { activeTabKey }
-          )}
+        <div style={{ padding: "15px 0" }}>
+          {React.isValidElement(contentListNoTitle[activeTabKey]) &&
+            React.cloneElement(
+              contentListNoTitle[activeTabKey] as React.ReactElement,
+              { activeTabKey }
+            )}
+        </div>
+
         {/* {contentListNoTitle[activeTabKey]} */}
       </Card>
     </>

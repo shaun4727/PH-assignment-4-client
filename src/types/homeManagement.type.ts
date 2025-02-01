@@ -18,4 +18,5 @@ export type TBook = {
   createdAt: string;
   updatedAt: string;
   qty?: number;
+  reviews: string[];
 };

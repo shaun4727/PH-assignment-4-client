@@ -230,7 +230,7 @@ function AllProducts() {
                       by <span className="writer-name">{item?.author}</span>
                     </p>
                     <div className="price-category">
-                      <h1 className="price">${item?.price}</h1>
+                      <h1 className="price">BDT {item?.price}</h1>
                       <span className="category">{item?.category}</span>
                     </div>
                     <p className="description">{item?.description}</p>

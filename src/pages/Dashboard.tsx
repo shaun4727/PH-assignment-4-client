@@ -17,16 +17,17 @@ const getSidebarItems = (user: TUser) => {
       userPaths,
       "dashboard"
     );
-    return navItems;
+    return { navItems, defaultKey: "Order History" };
   }
   const navItems: MenuProps["items"] = navbarGenerator(adminPaths, "dashboard");
-  return navItems;
+  return { navItems, defaultKey: "View Orders" };
 };
 
 const DashboardPage: React.FC = () => {
   const user = useAppSelector((state) => state.auth.user);
-  const sidebarItems = getSidebarItems(user as TUser);
-
+  const returedObj = getSidebarItems(user as TUser);
+  const sidebarItems = returedObj.navItems;
+  const defaultKey = returedObj.defaultKey;
   return (
     <>
       <Layout className="dashboard-layout root-layout">
@@ -37,7 +38,7 @@ const DashboardPage: React.FC = () => {
             {" "}
             <Menu
               mode="inline"
-              defaultSelectedKeys={["Order History"]}
+              defaultSelectedKeys={[defaultKey]}
               style={{ height: "100%", borderRight: 0 }}
               items={sidebarItems}
             />

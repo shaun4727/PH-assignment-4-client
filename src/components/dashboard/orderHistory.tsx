@@ -1,20 +1,59 @@
-import React, { useState } from "react";
-import { Card, Col, Image, Row } from "antd";
+import React, { useEffect, useState } from "react";
+import { Card, Col, Image, Row, Select } from "antd";
 import "../../assets/css/dashboard/orderHistory.css";
 import { useAppSelector } from "../../redux/hook";
-import { useGetOrdersQuery } from "../../redux/features/order/order.api";
+import {
+  useDeleteOrderMutation,
+  useGetOrdersQuery,
+  useUpdateOrderMutation,
+} from "../../redux/features/order/order.api";
 import moment from "moment";
 import { TOrderSchemaWithId } from "../../types";
+import { CheckOutlined, DeleteOutlined, EditOutlined } from "@ant-design/icons";
 
 const OrderHistory: React.FC = () => {
   const user = useAppSelector((state) => state.auth.user);
+
+  const [edit, setEdit] = useState<boolean>(false);
+  const [orderStatus, setOrderStatus] = useState<string>("");
   const { data } = useGetOrdersQuery(undefined);
+
+  const [deleteOrder] = useDeleteOrderMutation();
+  const [updateOrder] = useUpdateOrderMutation();
   const [orderDetails, setOrderDetails] = useState<Partial<TOrderSchemaWithId>>(
     {}
   );
-
+  useEffect(() => {
+    const order = data?.data?.find((order) => order._id == orderDetails._id);
+    if (order) {
+      setOrderDetails(order);
+    }
+  }, [data, orderDetails]);
+  const toggleEdit = () => {
+    setEdit((prevEdit) => !prevEdit); // Toggle between true and false
+  };
   const setOrderDetailsInfo = (order: TOrderSchemaWithId) => {
     setOrderDetails(order);
+  };
+  const deleteOrderFunc = async (id: string): Promise<void> => {
+    try {
+      await deleteOrder(id);
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  const changeStatus = (status: string) => {
+    setOrderStatus(status);
+  };
+  const submitOrder = async (id: string) => {
+    toggleEdit();
+
+    try {
+      await updateOrder({ orderStatus, id });
+    } catch (err) {
+      console.log(err);
+    }
   };
 
   return (
@@ -38,27 +77,44 @@ const OrderHistory: React.FC = () => {
                   </h5>
                 </div>
                 {data?.data &&
-                  data.data.map((order) => (
+                  data.data.map((order, index) => (
                     <div
-                      className={`order-info bottom-border ${
+                      className={`order-info-row bottom-border ${
                         order._id == orderDetails._id ? "active-row" : ""
                       }`}
+                      key={index}
                       onClick={() => setOrderDetailsInfo(order)}
                     >
-                      <span className="order-title low-opacity">
-                        {"ID: "}
-                        {order?._id}
-                      </span>
-                      <div className="order-date">
-                        <span className="low-opacity">
-                          Date:{" "}
-                          <span className="date-value">
-                            {moment(order.createdAt).format(
-                              "MMMM Do YYYY, h:mm:ss a"
-                            )}
-                          </span>
+                      <div className={`order-info `}>
+                        <span className="order-title low-opacity">
+                          {"ID: "}
+                          {order?._id}
                         </span>
+                        <div className="order-date">
+                          <span className="low-opacity">
+                            Date:{" "}
+                            <span className="date-value">
+                              {moment(order.createdAt).format(
+                                "MMMM Do YYYY, h:mm:ss a"
+                              )}
+                            </span>
+                          </span>
+                        </div>
+                        <p>
+                          Ordered by{" "}
+                          <span className="ordered-by">
+                            {typeof order.user != "string"
+                              ? order.user.name
+                              : ""}
+                          </span>
+                        </p>
                       </div>
+                      <span
+                        className="icon"
+                        onClick={() => deleteOrderFunc(order._id)}
+                      >
+                        <DeleteOutlined style={{ color: "#9f0000" }} />
+                      </span>
                     </div>
                   ))}
               </div>
@@ -74,17 +130,64 @@ const OrderHistory: React.FC = () => {
                   <div className="top-level-order-detail">
                     <h3>
                       <span className="heading">Status:</span>{" "}
-                      <span className="value status">
-                        {orderDetails.status}
-                      </span>
+                      {!edit && (
+                        <span className="value status">
+                          {orderDetails.status}
+                        </span>
+                      )}
+                      {edit && (
+                        <Select
+                          showSearch
+                          onChange={changeStatus}
+                          style={{ width: 150 }}
+                          placeholder="Search to Select"
+                          options={[
+                            {
+                              value: "Pending",
+                              label: "Pending",
+                            },
+                            {
+                              value: "Paid",
+                              label: "Paid",
+                            },
+                            {
+                              value: "Shipped",
+                              label: "Shipped",
+                            },
+                            {
+                              value: "Completed",
+                              label: "Completed",
+                            },
+                            {
+                              value: "Cancelled",
+                              label: "Cancelled",
+                            },
+                          ]}
+                        />
+                      )}
                     </h3>
                     <h3>
                       <span className="heading">Total:</span>
-                      <span className="value">${orderDetails.totalPrice}</span>
+                      <span className="value">
+                        BDT {orderDetails.totalPrice}
+                      </span>
                     </h3>
+                    {!edit && (
+                      <h3 className="edit-btn" onClick={() => toggleEdit()}>
+                        <EditOutlined />
+                      </h3>
+                    )}
+                    {edit && (
+                      <h3
+                        className="edit-btn"
+                        onClick={() => submitOrder(orderDetails._id as string)}
+                      >
+                        <CheckOutlined />
+                      </h3>
+                    )}
                   </div>
-                  {orderDetails.products?.map((order) => (
-                    <div className="order-product-detail">
+                  {orderDetails.products?.map((order, index) => (
+                    <div className="order-product-detail" key={index}>
                       <h3>
                         {typeof order.product != "string"
                           ? order.product.title
@@ -114,7 +217,7 @@ const OrderHistory: React.FC = () => {
                               <h5>
                                 <span className="heading">Price: </span>
                                 <span className="value">
-                                  ${order.price * order.quantity}
+                                  BDT {order.price * order.quantity}
                                 </span>
                               </h5>
                             </div>

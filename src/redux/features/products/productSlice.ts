@@ -44,6 +44,9 @@ const productSlice = createSlice({
       state.books = [];
       state.checkoutSummary = { subTotal: 0, vat: 0, total: 0 };
     },
+    deleteCartItem: (state, action) => {
+      state.books = state.books.filter((book) => book._id != action.payload);
+    },
   },
 });
 export const {
@@ -52,6 +55,7 @@ export const {
   incrementProduct,
   decrementProduct,
   emptyCart,
+  deleteCartItem,
 } = productSlice.actions;
 
 export default productSlice.reducer;

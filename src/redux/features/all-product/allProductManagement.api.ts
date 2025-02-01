@@ -21,10 +21,11 @@ const homeManagementApi = baseApi.injectEndpoints({
         response: TResponseRedux<{ data: TBook[]; count: number }>
       ) => {
         return {
-          data: response.data?.data,
-          count: response.data?.count,
+          data: response.data!.data,
+          count: response.data!.count,
         };
       },
+      providesTags: ["products"],
     }),
   }),
 });
