@@ -22,94 +22,16 @@ import type { UploadRequestOption as RcCustomRequestOptions } from "rc-upload/li
 import { useCreateProductMutation } from "../../redux/features/products/product.api";
 import { RcFile } from "antd/es/upload";
 
-interface DataType {
-  _id: string;
-  title: string;
-  author: string;
-  price: string;
-  category: string;
-  quantity: number;
-  image: string;
-  inStock: boolean;
-  description: string;
-  createdAt: string;
-  updatedAt: string;
-  reviews: string[];
-}
-
-const columns: TableProps<DataType>["columns"] = [
-  {
-    title: "Book",
-    dataIndex: "book",
-    key: "1",
-    render: (_, { title, author }) => (
-      <div>
-        <h4 style={{ margin: 0, padding: 0 }}>{title}</h4>by{" "}
-        <span style={{ fontWeight: 600, color: "#188f67" }}>{author}</span>
-      </div>
-    ),
-  },
-  {
-    title: "Price",
-    dataIndex: "price",
-    key: "2",
-  },
-  {
-    title: "Category",
-    dataIndex: "category",
-    key: "3",
-    render: (_, { category }) => (
-      <>
-        {
-          <Tag color={"#cb795f"} key={category}>
-            {category}
-          </Tag>
-        }
-      </>
-    ),
-  },
-  {
-    title: "Quantity",
-    key: "4",
-    dataIndex: "quantity",
-  },
-  {
-    title: "Instock",
-    key: "5",
-    dataIndex: "inStock",
-    render: (_, { inStock }) => <>{inStock ? "YES" : "NO"}</>,
-  },
-  {
-    title: "Action",
-    key: "6",
-    render: () => (
-      <Space size="middle">
-        <Button color="default" variant="dashed">
-          Delete
-        </Button>
-        <Button color="primary" variant="dashed">
-          Update
-        </Button>
-      </Space>
-    ),
-  },
-];
 let dataTable;
 const { Option } = Select;
 
 const MangeProducts: React.FC = () => {
+  const [form] = Form.useForm<Partial<TBook>>();
+  const [editMode, setEditMode] = useState<boolean>(false);
+
   const { data } = useGetAllProductProductPageQuery([
     { name: "dashboard", value: "dashboard" },
   ]);
-  type FieldType = {
-    title: string;
-    author: string;
-    price: number;
-    category: string;
-    quantity: number;
-    image?: string | { file: RcFile };
-    description: string;
-  };
 
   const [createProduct] = useCreateProductMutation();
 
@@ -121,14 +43,84 @@ const MangeProducts: React.FC = () => {
 
   const onClose = () => {
     setOpen(false);
+    setEditMode(false);
   };
 
-  const onFinish: FormProps<FieldType>["onFinish"] = async (values) => {
+  const editFormData = (data: Partial<TBook>) => {
+    setEditMode(true);
+    form.setFieldsValue(data);
+    showDrawer();
+  };
+
+  const columns: TableProps<Partial<TBook>>["columns"] = [
+    {
+      title: "Book",
+      dataIndex: "book",
+      key: "1",
+      render: (_, { title, author }) => (
+        <div>
+          <h4 style={{ margin: 0, padding: 0 }}>{title}</h4>by{" "}
+          <span style={{ fontWeight: 600, color: "#188f67" }}>{author}</span>
+        </div>
+      ),
+    },
+    {
+      title: "Price",
+      dataIndex: "price",
+      key: "2",
+    },
+    {
+      title: "Category",
+      dataIndex: "category",
+      key: "3",
+      render: (_, { category }) => (
+        <>
+          {
+            <Tag color={"#cb795f"} key={category}>
+              {category}
+            </Tag>
+          }
+        </>
+      ),
+    },
+    {
+      title: "Quantity",
+      key: "4",
+      dataIndex: "quantity",
+    },
+    {
+      title: "Instock",
+      key: "5",
+      dataIndex: "inStock",
+      render: (_, { inStock }) => <>{inStock ? "YES" : "NO"}</>,
+    },
+    {
+      title: "Action",
+      key: "6",
+      render: (_, rowData) => (
+        <Space size="middle">
+          <Button color="default" variant="dashed">
+            Delete
+          </Button>
+          <Button
+            color="primary"
+            variant="dashed"
+            onClick={() => editFormData(rowData)}
+          >
+            Update
+          </Button>
+        </Space>
+      ),
+    },
+  ];
+  const onFinish: FormProps<Partial<TBook>>["onFinish"] = async (values) => {
     try {
       let fileName;
       if (typeof values.image != "string") {
         fileName = values?.image?.file;
         delete values["image"];
+      } else {
+        fileName = values.image;
       }
       const formValues = {
         ...values,
@@ -140,15 +132,18 @@ const MangeProducts: React.FC = () => {
         file: JSON.stringify(fileName),
         data: JSON.stringify(formValues),
       };
-
-      await createProduct(formData).unwrap;
+      if (editMode) {
+        console.log(formData);
+      } else {
+        await createProduct(formData).unwrap;
+      }
       onClose();
     } catch (err) {
       console.log(err);
     }
   };
 
-  const onFinishFailed: FormProps<FieldType>["onFinishFailed"] = (
+  const onFinishFailed: FormProps<Partial<TBook>>["onFinishFailed"] = (
     errorInfo
   ) => {
     console.log("Failed:", errorInfo);
@@ -185,16 +180,22 @@ const MangeProducts: React.FC = () => {
   };
   return (
     <>
-      <Table<DataType>
+      <Button
+        className="buy-now"
+        onClick={showDrawer}
+        icon={<PlusOutlined />}
+        style={{ marginBottom: "15px" }}
+      >
+        Create New
+      </Button>
+      <Table<Partial<TBook>>
         columns={columns}
         dataSource={dataTable as readonly TBook[]}
         rowKey="_id"
       />
-      <Button className="buy-now" onClick={showDrawer} icon={<PlusOutlined />}>
-        Create New
-      </Button>
+
       <Drawer
-        title="Create a new account"
+        title="Create a new product"
         width={720}
         onClose={onClose}
         open={open}
@@ -211,13 +212,13 @@ const MangeProducts: React.FC = () => {
       >
         <Form
           layout="vertical"
-          hideRequiredMark
+          form={form}
           onFinish={onFinish}
           onFinishFailed={onFinishFailed}
         >
           <Row gutter={16}>
             <Col span={12}>
-              <Form.Item<FieldType>
+              <Form.Item<TBook>
                 name="title"
                 label="Title"
                 rules={[
@@ -228,7 +229,7 @@ const MangeProducts: React.FC = () => {
               </Form.Item>
             </Col>
             <Col span={12}>
-              <Form.Item<FieldType>
+              <Form.Item<TBook>
                 name="author"
                 label="Author"
                 rules={[
@@ -241,7 +242,7 @@ const MangeProducts: React.FC = () => {
           </Row>
           <Row gutter={16}>
             <Col span={12}>
-              <Form.Item<FieldType>
+              <Form.Item<TBook>
                 name="price"
                 label="Price"
                 rules={[{ required: true, message: "Please enter price" }]}
@@ -250,7 +251,7 @@ const MangeProducts: React.FC = () => {
               </Form.Item>
             </Col>
             <Col span={12}>
-              <Form.Item<FieldType>
+              <Form.Item<TBook>
                 name="category"
                 label="Category"
                 rules={[
@@ -274,7 +275,7 @@ const MangeProducts: React.FC = () => {
           </Row>
           <Row gutter={16}>
             <Col span={12}>
-              <Form.Item<FieldType>
+              <Form.Item<TBook>
                 name="quantity"
                 label="Quantity"
                 rules={[{ required: true, message: "Please enter quantity" }]}
@@ -283,7 +284,7 @@ const MangeProducts: React.FC = () => {
               </Form.Item>
             </Col>
             <Col span={12}>
-              <Form.Item<FieldType>
+              <Form.Item<TBook>
                 name="image"
                 label="Image"
                 rules={[
@@ -298,7 +299,7 @@ const MangeProducts: React.FC = () => {
           </Row>
           <Row gutter={16}>
             <Col span={24}>
-              <Form.Item<FieldType>
+              <Form.Item<TBook>
                 name="description"
                 label="Description"
                 rules={[
@@ -314,9 +315,16 @@ const MangeProducts: React.FC = () => {
                 />
               </Form.Item>
               <Form.Item label={null}>
-                <Button className="login-submit" htmlType="submit">
-                  Submit
-                </Button>
+                {!editMode && (
+                  <Button className="login-submit" htmlType="submit">
+                    Create
+                  </Button>
+                )}
+                {editMode && (
+                  <Button className="login-submit" htmlType="submit">
+                    Update
+                  </Button>
+                )}
               </Form.Item>
             </Col>
           </Row>

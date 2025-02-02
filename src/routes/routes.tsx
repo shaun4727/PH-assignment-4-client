@@ -26,8 +26,6 @@ export const fetchUserData = (): RootState => {
   const state: RootState = store.getState(); // Typed state
   const user = state;
 
-  console.log("User from state:", user);
-
   // Perform operations based on the state
   return user;
 };

@@ -1,3 +1,5 @@
+import { RcFile } from "antd/es/upload";
+
 export type TCarouselImage = {
   _id: string;
   image: string;
@@ -11,7 +13,6 @@ export type TBook = {
   author: string;
   price: string;
   category: string;
-  image: string;
   description: string;
   quantity: number;
   inStock: boolean;
@@ -19,4 +20,5 @@ export type TBook = {
   updatedAt: string;
   qty?: number;
   reviews: string[];
+  image: string | { file: RcFile };
 };
