@@ -84,3 +84,16 @@
 :where(.css-dev-only-do-not-override-1htoz2s).ant-menu-light > .ant-menu {
   background-color: transparent;
 }
+:where(.css-1htoz2s).ant-menu-light.ant-menu-horizontal
+  > .ant-menu-item-selected::after,
+:where(.css-1htoz2s).ant-menu-light
+  > .ant-menu.ant-menu-horizontal
+  > .ant-menu-item-selected::after,
+:where(.css-1htoz2s).ant-menu-light.ant-menu-horizontal
+  > .ant-menu-submenu-selected::after,
+:where(.css-1htoz2s).ant-menu-light
+  > .ant-menu.ant-menu-horizontal
+  > .ant-menu-submenu-selected::after {
+  border: none;
+  /* border-bottom-color: #1677ff; */
+}
