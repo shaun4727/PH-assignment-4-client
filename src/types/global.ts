@@ -73,7 +73,13 @@ export interface TOrderSchema {
   objectTwo: TCustomerDetails;
   status?: string;
 }
-
+export interface TUserRetrieve {
+  name: string;
+  email: string;
+  role: "admin" | "user";
+  isBlocked: boolean;
+  _id: string;
+}
 export interface TOrderSchemaWithId extends TOrderSchema {
   _id: string;
   createdAt: string;

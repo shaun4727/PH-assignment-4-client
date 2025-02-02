@@ -1,8 +1,8 @@
-import { Button, Card, Col, Row } from "antd";
+import { Button, Col, Row } from "antd";
 import "../assets/css/productDetail.css";
-import { NavLink, useLocation } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 import { ShoppingCartOutlined } from "@ant-design/icons";
-import cardImg from "../assets/images/tab-card/book.png";
+// import cardImg from "../assets/images/tab-card/book.png";
 import { useAppDispatch } from "../redux/hook";
 import { setCart } from "../redux/features/products/productSlice";
 
@@ -47,7 +47,7 @@ const ProductDetail: React.FC = () => {
           </div>
         </Col>
       </Row>
-      <Row>
+      {/* <Row>
         <Col span={24}>
           <h1 className="similar-title">Similar Books</h1>
         </Col>
@@ -214,7 +214,7 @@ const ProductDetail: React.FC = () => {
             </div>
           </Card>
         </Col>
-      </Row>
+      </Row> */}
     </div>
   );
 };

@@ -1,3 +1,4 @@
+import { TResponseRedux, TUserRetrieve } from "../../../types";
 import { baseApi } from "../../api/baseApi";
 
 const authApi = baseApi.injectEndpoints({
@@ -17,7 +18,33 @@ const authApi = baseApi.injectEndpoints({
         body: userInfo,
       }),
     }),
+    getUsers: builder.query({
+      query: () => {
+        return {
+          url: "/auth/get-users",
+          method: "GET",
+        };
+      },
+      transformResponse: (response: TResponseRedux<TUserRetrieve[]>) => {
+        return {
+          data: response!.data,
+        };
+      },
+      providesTags: ["users"],
+    }),
+    updateUserStatus: builder.mutation({
+      query: (args) => ({
+        url: `/auth/change-status/${args.id}`,
+        method: "PATCH",
+      }),
+      invalidatesTags: ["users"],
+    }),
   }),
 });
 
-export const { useLoginMutation, useRegisterMutation } = authApi;
+export const {
+  useLoginMutation,
+  useRegisterMutation,
+  useGetUsersQuery,
+  useUpdateUserStatusMutation,
+} = authApi;

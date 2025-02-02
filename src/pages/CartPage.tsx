@@ -173,6 +173,7 @@ const CartView: React.FC = () => {
                   <span className="total">${getFullTotal()}</span>
                 </div>
                 <Button
+                  disabled={Number(getFullTotal()) === 0}
                   className="buy-now checkout-btn"
                   onClick={setCheckoutData}
                 >

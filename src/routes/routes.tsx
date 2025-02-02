@@ -21,6 +21,7 @@ import MangeProducts from "../components/dashboard/ManageProducts";
 import { store } from "../redux/store"; // Import the store directly
 import { RootState } from "../redux/store"; // Import RootState type for correct typings
 import { navConstant, USER_ROLE } from "../utils/userRole";
+import GetUsers from "../components/dashboard/GetUsers";
 
 export const fetchUserData = (): RootState => {
   const state: RootState = store.getState(); // Typed state
@@ -57,6 +58,12 @@ export const adminPaths = [
     path: "manage-products",
     icon: <BarsOutlined />,
     element: <MangeProducts />,
+  },
+  {
+    name: "Users",
+    path: "get-users",
+    icon: <BarsOutlined />,
+    element: <GetUsers />,
   },
 
   {

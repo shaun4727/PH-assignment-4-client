@@ -9,7 +9,11 @@ import { useFooterObserver } from "./layout/FooterObserverContext";
 const FooterPage: React.FC = () => {
   const { footerRef } = useFooterObserver();
   return (
-    <Row gutter={16} style={{ marginTop: "25px" }} ref={footerRef}>
+    <Row
+      gutter={16}
+      style={{ marginTop: "25px", borderTop: "1px solid #d3d3d3" }}
+      ref={footerRef}
+    >
       <Col xs={24} sm={24} md={12} lg={8} xl={8} className="gutter-row ">
         <div className="footer-row">
           <h1>REGISTER NOW</h1>

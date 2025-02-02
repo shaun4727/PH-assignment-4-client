@@ -72,5 +72,5 @@ export const baseApi = createApi({
   baseQuery: baseQueryWithRefreshToken,
   endpoints: () => ({}),
 
-  tagTypes: ["orders", "products"],
+  tagTypes: ["orders", "products", "users"],
 });
