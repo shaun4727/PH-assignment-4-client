@@ -67,56 +67,83 @@ const CartView: React.FC = () => {
   return (
     <div className="cart-page">
       {cartItems?.map((item, index) => (
-        <Row gutter={16} key={index}>
-          <Col className="gutter-row" span={16}>
-            <div className="cart-container">
-              <span className="icon" onClick={() => deleteBook(item._id)}>
-                <DeleteOutlined style={{ color: "#9f0000" }} />
-              </span>
-              <img src={productImg} className="cart-img" />
-              <div className="product-details">
-                <h2 className="book-name">{item?.title}</h2>
-                <p>
-                  by <span className="writer-name">{item?.author}</span>
-                </p>
-              </div>
-            </div>
-          </Col>
-          <Col className="gutter-row" span={4}>
+        <Row gutter={[16, 16]} key={index}>
+          <Col className="gutter-row" span={24}>
             <div
-              style={{
-                display: "flex",
-                alignItems: "center",
-                gap: "10px",
-                height: "100%",
-                justifyContent: "center",
-              }}
+              className="cart-body"
+              // style={{
+              //   display: "flex",
+              //   alignItems: "center",
+              //   gap: "10px",
+              //   height: "100%",
+              //   justifyContent: "center",
+              // }}
             >
-              <Button
-                className="increase-decrease"
-                icon={<MinusOutlined />}
-                disabled={item.qty == 1}
-                onClick={() => decrement(item?._id)}
-                // Disable button if quantity is 1
-              />
-              <Input
-                value={item.qty}
-                readOnly
-                style={{
-                  width: "50px",
-                  textAlign: "center",
-                }}
-              />
-              <Button
-                className="increase-decrease"
-                icon={<PlusOutlined />}
-                onClick={() => increment(item)}
-              />
-            </div>
-          </Col>
-          <Col className="gutter-row" span={4}>
-            <div className="price-container">
-              <h2 className="price">${getTotal(item)}</h2>
+              <div className="cart-container">
+                <span className="icon" onClick={() => deleteBook(item._id)}>
+                  <DeleteOutlined style={{ color: "#9f0000" }} />
+                </span>
+                <img src={productImg} className="cart-img" />
+                <div className="product-details">
+                  <h2 className="book-name">{item?.title}</h2>
+                  <p>
+                    by <span className="writer-name">{item?.author}</span>
+                  </p>
+                </div>
+              </div>
+              <div className="cart-quantity for-larger-device">
+                {" "}
+                <Button
+                  className="increase-decrease"
+                  icon={<MinusOutlined />}
+                  disabled={item.qty == 1}
+                  onClick={() => decrement(item?._id)}
+                />
+                <Input
+                  value={item.qty}
+                  readOnly
+                  style={{
+                    width: "50px",
+                    textAlign: "center",
+                  }}
+                />
+                <Button
+                  className="increase-decrease"
+                  icon={<PlusOutlined />}
+                  onClick={() => increment(item)}
+                />
+              </div>
+              <div className="price-container for-larger-device">
+                <h2 className="price">${getTotal(item)}</h2>
+              </div>
+              <div className="for-smaller-device">
+                <div className="cart-quantity">
+                  {" "}
+                  <Button
+                    className="increase-decrease"
+                    icon={<MinusOutlined />}
+                    disabled={item.qty == 1}
+                    onClick={() => decrement(item?._id)}
+                  />
+                  <Input
+                    value={item.qty}
+                    readOnly
+                    style={{
+                      width: "50px",
+                      textAlign: "center",
+                      height: "32px",
+                    }}
+                  />
+                  <Button
+                    className="increase-decrease"
+                    icon={<PlusOutlined />}
+                    onClick={() => increment(item)}
+                  />
+                </div>
+                <div className="price-container">
+                  <h2 className="price">${getTotal(item)}</h2>
+                </div>
+              </div>
             </div>
           </Col>
         </Row>

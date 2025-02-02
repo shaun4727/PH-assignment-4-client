@@ -20,7 +20,7 @@ import LogoutPage from "../pages/Logout";
 import MangeProducts from "../components/dashboard/ManageProducts";
 import { store } from "../redux/store"; // Import the store directly
 import { RootState } from "../redux/store"; // Import RootState type for correct typings
-import { USER_ROLE } from "../utils/userRole";
+import { navConstant, USER_ROLE } from "../utils/userRole";
 
 export const fetchUserData = (): RootState => {
   const state: RootState = store.getState(); // Typed state
@@ -29,44 +29,6 @@ export const fetchUserData = (): RootState => {
   // Perform operations based on the state
   return user;
 };
-
-export const paths = [
-  {
-    index: true,
-    name: "HOME",
-    path: "home",
-    element: <Home />,
-  },
-  {
-    name: "ABOUT US",
-    path: "about",
-    element: <About />,
-  },
-  {
-    name: "ALL PRODUCTS",
-    path: "all-products",
-    element: <AllProducts />,
-  },
-  {
-    name: "DASHBOARD",
-    path: "dashboard",
-    element: (
-      <ProtectedRoute>
-        <DashboardPage />,
-      </ProtectedRoute>
-    ),
-  },
-  {
-    name: "LOGIN",
-    path: "login",
-    element: <LoginPage />,
-  },
-  {
-    name: "CART",
-    path: "view-cart",
-    element: <CartView />,
-  },
-];
 
 export const userPaths = [
   {
@@ -104,21 +66,53 @@ export const adminPaths = [
     element: <LogoutPage />,
   },
 ];
-
-const getRouteItems = () => {
+export const getRouteItems = () => {
   const user = fetchUserData().auth.user;
   if (user && user.role == USER_ROLE.user) {
-    return routeGenerator(userPaths);
+    return routeGenerator(userPaths, "");
   }
-  return routeGenerator(adminPaths);
+  return routeGenerator(adminPaths, "");
 };
+export const paths = [
+  {
+    index: true,
+    name: "HOME",
+    path: "home",
+    element: <Home />,
+  },
+  {
+    name: "ABOUT US",
+    path: "about",
+    element: <About />,
+  },
+  {
+    name: "ALL PRODUCTS",
+    path: "all-products",
+    element: <AllProducts />,
+  },
+  {
+    name: "DASHBOARD",
+    path: "dashboard",
+  },
+  {
+    name: "LOGIN",
+    path: "login",
+    element: <LoginPage />,
+  },
+  {
+    name: "CART",
+    path: "view-cart",
+    element: <CartView />,
+  },
+];
 
 const router = createBrowserRouter([
   {
     path: "/",
     element: <App />,
-    children: routeGenerator(paths),
+    children: routeGenerator(paths, navConstant.removeDashboard),
   },
+
   {
     path: "/dashboard",
     element: (
@@ -138,10 +132,10 @@ const router = createBrowserRouter([
       },
     ],
   },
-  {
-    path: "/login",
-    element: <LoginPage />,
-  },
+  // {
+  //   path: "/login",
+  //   element: <LoginPage />,
+  // },
   {
     path: "/order/verify",
     element: <App />,

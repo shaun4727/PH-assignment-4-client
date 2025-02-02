@@ -1,10 +1,10 @@
 import { Button, Card, Form, FormProps, Input } from "antd";
-import React from "react";
+import React, { useEffect } from "react";
 import "../assets/css/loginPage.css";
 import { useLoginMutation } from "../redux/features/auth/authApi";
 import { verifyToken } from "../utils/verifyToken";
 import { setUser } from "../redux/features/auth/authSlice";
-import { useAppDispatch } from "../redux/hook";
+import { useAppDispatch, useAppSelector } from "../redux/hook";
 import { NavLink, useNavigate } from "react-router-dom";
 import { TUser } from "../types";
 
@@ -16,6 +16,13 @@ const LoginPage: React.FC = () => {
   const [login] = useLoginMutation();
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
+  const token = useAppSelector((state) => state.auth.token);
+
+  useEffect(() => {
+    if (token) {
+      navigate(`/dashboard`);
+    }
+  }, [token, navigate]);
 
   const onFinish: FormProps<FieldType>["onFinish"] = async (values) => {
     try {

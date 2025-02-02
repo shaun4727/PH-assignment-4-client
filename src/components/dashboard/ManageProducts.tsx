@@ -221,7 +221,7 @@ const MangeProducts: React.FC = () => {
       />
 
       <Drawer
-        title="Create a new product"
+        title={`${editData.mode ? "Update" : "Create"} new product`}
         width={720}
         onClose={onClose}
         open={open}
@@ -230,11 +230,6 @@ const MangeProducts: React.FC = () => {
             paddingBottom: 80,
           },
         }}
-        // extra={
-        //   <Space>
-        //     <Button onClick={onClose}>Cancel</Button>
-        //   </Space>
-        // }
       >
         <Form
           layout="vertical"

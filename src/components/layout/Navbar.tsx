@@ -1,5 +1,4 @@
-import React, { useEffect } from "react";
-// import React, { useState, useEffect } from "react";
+import React from "react";
 
 import type { MenuProps } from "antd";
 import { Layout, Menu } from "antd";
@@ -9,7 +8,6 @@ import { navbarGenerator } from "../../utils/navbarGenerator";
 import { paths } from "../../routes/routes";
 import { TNavItem } from "../../types";
 import { useAppSelector } from "../../redux/hook";
-
 const { Header } = Layout;
 
 const removeNavItem = (nav: string, navArr: TNavItem[]) => {
@@ -22,7 +20,6 @@ const removeNavItem = (nav: string, navArr: TNavItem[]) => {
 
 const Navbar: React.FC = () => {
   const NavArr = JSON.parse(JSON.stringify(paths));
-  // const [current, setCurrent] = useState("HOME");
   const token = useAppSelector((state) => state.auth.token);
   const cartItems = useAppSelector((state) => state.cart.books);
 
@@ -37,13 +34,8 @@ const Navbar: React.FC = () => {
     cartItems.length
   );
 
-  useEffect(() => {
-    document.title = "Home"; // Set the title here
-  }, []);
-
   const onClick: MenuProps["onClick"] = (e) => {
-    // setCurrent(e.key);
-    console.log(e);
+    document.title = e.key;
   };
 
   return (
@@ -56,7 +48,7 @@ const Navbar: React.FC = () => {
         <Menu
           mode="horizontal"
           onClick={onClick}
-          defaultSelectedKeys={["2"]}
+          defaultSelectedKeys={[document.title]}
           items={navItems}
           style={{ flex: 1, minWidth: 0, justifyContent: "end" }}
         />

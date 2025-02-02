@@ -25,9 +25,9 @@ const getSidebarItems = (user: TUser) => {
 
 const DashboardPage: React.FC = () => {
   const user = useAppSelector((state) => state.auth.user);
-  const returedObj = getSidebarItems(user as TUser);
-  const sidebarItems = returedObj.navItems;
-  const defaultKey = returedObj.defaultKey;
+  const returnedObj = getSidebarItems(user as TUser);
+  const sidebarItems = returnedObj.navItems;
+  const defaultKey = returnedObj.defaultKey;
   return (
     <>
       <Layout className="dashboard-layout root-layout">

@@ -20,13 +20,24 @@ const TabCard: React.FC<TabCardProps> = ({ activeTabKey }) => {
   return (
     <Row gutter={[16, 16]}>
       {allBooks?.map((item, index) => (
-        <Col xs={24} sm={24} md={12} lg={8} xl={8} className="gutter-row">
+        <Col
+          xs={24}
+          sm={24}
+          md={12}
+          lg={8}
+          xl={8}
+          className="gutter-row"
+          key={index}
+        >
           <Card
-            key={index}
             className="card-item"
             hoverable
             cover={
-              <img alt="example" src={item.image} style={{ height: 140 }} />
+              <img
+                alt="example"
+                src={typeof item.image == "string" ? item.image : ""}
+                style={{ height: 140 }}
+              />
             }
           >
             <h3>{item?.title}</h3>
