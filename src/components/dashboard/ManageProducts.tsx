@@ -19,7 +19,11 @@ import { useGetAllProductProductPageQuery } from "../../redux/features/all-produ
 import { TBook } from "../../types";
 import { PlusOutlined, UploadOutlined } from "@ant-design/icons";
 import type { UploadRequestOption as RcCustomRequestOptions } from "rc-upload/lib/interface";
-import { useCreateProductMutation } from "../../redux/features/products/product.api";
+import {
+  useCreateProductMutation,
+  useDeleteProductMutation,
+  useUpdateProductMutation,
+} from "../../redux/features/products/product.api";
 import { RcFile } from "antd/es/upload";
 
 let dataTable;
@@ -27,13 +31,18 @@ const { Option } = Select;
 
 const MangeProducts: React.FC = () => {
   const [form] = Form.useForm<Partial<TBook>>();
-  const [editMode, setEditMode] = useState<boolean>(false);
+  const [editData, setEditData] = useState<{ id: string; mode: boolean }>({
+    id: "",
+    mode: false,
+  });
 
   const { data } = useGetAllProductProductPageQuery([
     { name: "dashboard", value: "dashboard" },
   ]);
 
   const [createProduct] = useCreateProductMutation();
+  const [updateProduct] = useUpdateProductMutation();
+  const [deleteProduct] = useDeleteProductMutation();
 
   dataTable = data?.data || [];
   const [open, setOpen] = useState(false);
@@ -43,15 +52,26 @@ const MangeProducts: React.FC = () => {
 
   const onClose = () => {
     setOpen(false);
-    setEditMode(false);
+    setEditData((preValue) => {
+      return {
+        ...preValue,
+        mode: false,
+      };
+    });
   };
 
   const editFormData = (data: Partial<TBook>) => {
-    setEditMode(true);
+    setEditData({ id: data._id || "", mode: true });
     form.setFieldsValue(data);
     showDrawer();
   };
-
+  const deleteBook = async (data: Partial<TBook>) => {
+    try {
+      await deleteProduct(data._id);
+    } catch (err) {
+      console.log(err);
+    }
+  };
   const columns: TableProps<Partial<TBook>>["columns"] = [
     {
       title: "Book",
@@ -99,7 +119,11 @@ const MangeProducts: React.FC = () => {
       key: "6",
       render: (_, rowData) => (
         <Space size="middle">
-          <Button color="default" variant="dashed">
+          <Button
+            color="default"
+            variant="dashed"
+            onClick={() => deleteBook(rowData)}
+          >
             Delete
           </Button>
           <Button
@@ -128,14 +152,16 @@ const MangeProducts: React.FC = () => {
         quantity: Number(values.quantity),
         inStock: true,
       };
+
       const formData = {
+        id: editData.id,
         file: JSON.stringify(fileName),
         data: JSON.stringify(formValues),
       };
-      if (editMode) {
-        console.log(formData);
+      if (editData.mode == true) {
+        await updateProduct(formData);
       } else {
-        await createProduct(formData).unwrap;
+        await createProduct(formData);
       }
       onClose();
     } catch (err) {
@@ -315,12 +341,12 @@ const MangeProducts: React.FC = () => {
                 />
               </Form.Item>
               <Form.Item label={null}>
-                {!editMode && (
+                {!editData.mode && (
                   <Button className="login-submit" htmlType="submit">
                     Create
                   </Button>
                 )}
-                {editMode && (
+                {editData.mode && (
                   <Button className="login-submit" htmlType="submit">
                     Update
                   </Button>
