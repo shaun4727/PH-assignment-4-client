@@ -49,7 +49,10 @@ const MangeProducts: React.FC = () => {
   const showDrawer = () => {
     setOpen(true);
   };
-
+  const createNewProduct = () => {
+    form.resetFields();
+    showDrawer();
+  };
   const onClose = () => {
     setOpen(false);
     setEditData((preValue) => {
@@ -208,7 +211,7 @@ const MangeProducts: React.FC = () => {
     <>
       <Button
         className="buy-now"
-        onClick={showDrawer}
+        onClick={createNewProduct}
         icon={<PlusOutlined />}
         style={{ marginBottom: "15px" }}
       >
@@ -308,9 +311,7 @@ const MangeProducts: React.FC = () => {
               <Form.Item<TBook>
                 name="image"
                 label="Image"
-                rules={[
-                  { required: true, message: "Please choose the dateTime" },
-                ]}
+                rules={[{ required: true, message: "Please choose the image" }]}
               >
                 <Upload {...props}>
                   <Button icon={<UploadOutlined />}>Upload</Button>
