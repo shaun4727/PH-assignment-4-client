@@ -8,6 +8,7 @@ import { navbarGenerator } from "../../utils/navbarGenerator";
 import { paths } from "../../routes/routes";
 import { TNavItem } from "../../types";
 import { useAppSelector } from "../../redux/hook";
+import { useLocation } from "react-router-dom";
 const { Header } = Layout;
 
 const removeNavItem = (nav: string, navArr: TNavItem[]) => {
@@ -18,10 +19,28 @@ const removeNavItem = (nav: string, navArr: TNavItem[]) => {
   }
 };
 
+const menuItems: Record<string, string> = {
+  "/home": "HOME",
+  "/about": "ABOUT US",
+  "/all-products": "ALL PRODUCTS",
+  "/dashboard": "DASHBOARD",
+  "/login": "LOGIN",
+  "/view-cart": "CART",
+  "/register": "SIGN UP",
+  "/order/verify": "ORDER VERIFY",
+  "/product/view-detail": "PRODUCT DETAIL",
+  "/checkout": "CHECKOUT",
+};
+
 const Navbar: React.FC = () => {
   const NavArr = JSON.parse(JSON.stringify(paths));
   const token = useAppSelector((state) => state.auth.token);
   const cartItems = useAppSelector((state) => state.cart.books);
+  const { pathname } = useLocation();
+
+  if (menuItems[pathname]) {
+    document.title = menuItems[pathname];
+  }
 
   if (token) {
     removeNavItem("LOGIN", NavArr);
