@@ -4,6 +4,7 @@
 .dashboard-layout .ant-menu-item-selected {
   color: var(--active-btn-border) !important;
   border-bottom: 2px solid var(--active-btn-border);
+  background-color: #fff;
 }
 .dashboard-layout .ant-menu-item-selected::after {
   border: none;

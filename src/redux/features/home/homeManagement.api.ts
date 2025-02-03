@@ -10,6 +10,7 @@ const homeManagementApi = baseApi.injectEndpoints({
       }),
       transformResponse: (response: TResponseRedux<TCarouselImage[]>) =>
         response.data,
+      providesTags: ["carousel"],
     }),
     getAllProducts: builder.query({
       query: () => ({

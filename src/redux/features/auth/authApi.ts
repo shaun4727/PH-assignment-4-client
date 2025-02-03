@@ -39,6 +39,13 @@ const authApi = baseApi.injectEndpoints({
       }),
       invalidatesTags: ["users"],
     }),
+    updatePssword: builder.mutation({
+      query: (userInfo) => ({
+        url: "/auth/update-password",
+        method: "POST",
+        body: userInfo,
+      }),
+    }),
   }),
 });
 
@@ -47,4 +54,5 @@ export const {
   useRegisterMutation,
   useGetUsersQuery,
   useUpdateUserStatusMutation,
+  useUpdatePsswordMutation,
 } = authApi;

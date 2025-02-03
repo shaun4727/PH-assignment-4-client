@@ -10,13 +10,26 @@ import {
 import moment from "moment";
 import { TOrderSchemaWithId } from "../../types";
 import { CheckOutlined, DeleteOutlined, EditOutlined } from "@ant-design/icons";
+import { toast } from "sonner";
 
 const OrderHistory: React.FC = () => {
   const user = useAppSelector((state) => state.auth.user);
 
   const [edit, setEdit] = useState<boolean>(false);
   const [orderStatus, setOrderStatus] = useState<string>("");
-  const { data } = useGetOrdersQuery(undefined);
+  const { data, isLoading, isSuccess } = useGetOrdersQuery(undefined);
+
+  let orderToastId: string | number = 3;
+  if (orderToastId == 3) {
+    if (isLoading) {
+      orderToastId = toast.loading("...Order data retrieving", {
+        id: orderToastId,
+      });
+    }
+    if (isSuccess) {
+      toast.success("Order data fetched", { id: orderToastId });
+    }
+  }
 
   const [deleteOrder] = useDeleteOrderMutation();
   const [updateOrder] = useUpdateOrderMutation();
@@ -37,7 +50,13 @@ const OrderHistory: React.FC = () => {
   };
   const deleteOrderFunc = async (id: string): Promise<void> => {
     try {
-      await deleteOrder(id);
+      let toastId;
+      const res = await deleteOrder(id).unwrap();
+      if (res.statusCode == 200) {
+        toastId = toast.success(res.message);
+      } else {
+        toast.error(res.message, { id: toastId });
+      }
     } catch (err) {
       console.log(err);
     }
@@ -48,9 +67,14 @@ const OrderHistory: React.FC = () => {
   };
   const submitOrder = async (id: string) => {
     toggleEdit();
-
+    let toastId;
     try {
-      await updateOrder({ orderStatus, id });
+      const res = await updateOrder({ orderStatus, id }).unwrap();
+      if (res.statusCode == 200) {
+        toastId = toast.success("Order updated!");
+      } else {
+        toast.success(res.message, { id: toastId });
+      }
     } catch (err) {
       console.log(err);
     }

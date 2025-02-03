@@ -1,35 +1,27 @@
-import App from "../App";
-import { createBrowserRouter } from "react-router-dom";
+// import App from "../App";
+// import { createBrowserRouter } from "react-router-dom";
 import Home from "../pages/Home";
 import About from "../pages/About";
 import AllProducts from "../pages/AllProducts";
-import { routeGenerator } from "../utils/routesGenerator";
-import ProductDetail from "../pages/ProductDetail";
+// import ProductDetail from "../pages/ProductDetail";
 import CartView from "../pages/CartPage";
-import CheckoutPage from "../pages/CheckoutPage";
-import DashboardPage from "../pages/Dashboard";
+// import CheckoutPage from "../pages/CheckoutPage";
+// import DashboardPage from "../pages/Dashboard";
 import OrderHistory from "../components/dashboard/orderHistory";
 import { BarsOutlined, LogoutOutlined } from "@ant-design/icons";
 import LoginPage from "../pages/Login";
-import ProtectedRoute from "../components/layout/ProtectedRoute";
+// import ProtectedRoute from "../components/layout/ProtectedRoute";
 
-import SignUpPage from "../pages/SignUp";
-import ScrollToTop from "../components/layout/ScrollToTop";
-import VerifyOrder from "../pages/VerifyOrder";
+// import SignUpPage from "../pages/SignUp";
+// import ScrollToTop from "../components/layout/ScrollToTop";
+// import VerifyOrder from "../pages/VerifyOrder";
 import LogoutPage from "../pages/Logout";
 import MangeProducts from "../components/dashboard/ManageProducts";
-import { store } from "../redux/store"; // Import the store directly
-import { RootState } from "../redux/store"; // Import RootState type for correct typings
-import { navConstant, USER_ROLE } from "../utils/userRole";
+
 import GetUsers from "../components/dashboard/GetUsers";
 
-export const fetchUserData = (): RootState => {
-  const state: RootState = store.getState(); // Typed state
-  const user = state;
-
-  // Perform operations based on the state
-  return user;
-};
+import UpdatePasswordCom from "../components/dashboard/UpdatePassword";
+import CarouselImageCom from "../components/dashboard/CarouselImageUpload";
 
 export const userPaths = [
   {
@@ -37,6 +29,12 @@ export const userPaths = [
     path: "order-history",
     icon: <BarsOutlined />,
     element: <OrderHistory />,
+  },
+  {
+    name: "Update Password",
+    path: "update",
+    icon: <BarsOutlined />,
+    element: <UpdatePasswordCom />,
   },
   {
     name: "Logout",
@@ -65,6 +63,12 @@ export const adminPaths = [
     icon: <BarsOutlined />,
     element: <GetUsers />,
   },
+  {
+    name: "Carousel Image",
+    path: "carousel-image",
+    icon: <BarsOutlined />,
+    element: <CarouselImageCom />,
+  },
 
   {
     name: "Logout",
@@ -73,13 +77,7 @@ export const adminPaths = [
     element: <LogoutPage />,
   },
 ];
-export const getRouteItems = () => {
-  const user = fetchUserData().auth.user;
-  if (user && user.role == USER_ROLE.user) {
-    return routeGenerator(userPaths, "");
-  }
-  return routeGenerator(adminPaths, "");
-};
+
 export const paths = [
   {
     index: true,
@@ -112,71 +110,3 @@ export const paths = [
     element: <CartView />,
   },
 ];
-
-const router = createBrowserRouter([
-  {
-    path: "/",
-    element: <App />,
-    children: routeGenerator(paths, navConstant.removeDashboard),
-  },
-
-  {
-    path: "/dashboard",
-    element: (
-      <ProtectedRoute>
-        <DashboardPage />,
-      </ProtectedRoute>
-    ),
-    children: getRouteItems(),
-  },
-  {
-    path: "/register",
-    element: <App />,
-    children: [
-      {
-        index: true,
-        element: <SignUpPage />,
-      },
-    ],
-  },
-  // {
-  //   path: "/login",
-  //   element: <LoginPage />,
-  // },
-  {
-    path: "/order/verify",
-    element: <App />,
-    children: [
-      {
-        index: true,
-        element: <VerifyOrder />,
-      },
-    ],
-  },
-
-  {
-    path: "/product/view-detail",
-    element: <App />,
-    children: [
-      {
-        index: true,
-        element: (
-          <ScrollToTop>
-            <ProductDetail />
-          </ScrollToTop>
-        ),
-      },
-
-      {
-        path: "checkout",
-        element: (
-          <ProtectedRoute>
-            <CheckoutPage />
-          </ProtectedRoute>
-        ),
-      },
-    ],
-  },
-]);
-
-export default router;

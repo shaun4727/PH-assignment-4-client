@@ -5,18 +5,26 @@ import {
   useGetUsersQuery,
   useUpdateUserStatusMutation,
 } from "../../redux/features/auth/authApi";
+import { toast } from "sonner";
 
 const GetUsers: React.FC = () => {
-  const { data } = useGetUsersQuery(undefined);
+  const { data, isFetching } = useGetUsersQuery(undefined);
   const [updateUserStatus] = useUpdateUserStatusMutation();
 
   const changeUserStatus = async (id: string) => {
     try {
-      await updateUserStatus({ id });
+      let toastId;
+      const res = await updateUserStatus({ id }).unwrap();
+      if (res.statusCode == 200) {
+        toastId = toast.success(res.message);
+      } else {
+        toast.error(res.message, { id: toastId });
+      }
     } catch (err) {
       console.log(err);
     }
   };
+
   const columns: TableProps<Partial<TUserRetrieve>>["columns"] = [
     {
       title: "Name",
@@ -85,6 +93,7 @@ const GetUsers: React.FC = () => {
         columns={columns}
         dataSource={data?.data ?? []}
         rowKey="_id"
+        loading={isFetching}
       />
     </>
   );

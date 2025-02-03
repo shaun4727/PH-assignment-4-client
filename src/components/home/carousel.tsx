@@ -3,6 +3,7 @@ import { Carousel } from "antd";
 import { useGetCarouselImagesQuery } from "../../redux/features/home/homeManagement.api";
 import { setCarousel } from "../../redux/features/home/homeSlice";
 import { useAppDispatch } from "../../redux/hook";
+import { toast } from "sonner";
 
 const contentStyle: React.CSSProperties = {
   margin: 0,
@@ -18,7 +19,16 @@ const CarouselCom: React.FC = () => {
   //   console.log();
   // };
   const dispatch = useAppDispatch();
-  const { data } = useGetCarouselImagesQuery(undefined);
+  const { data, isLoading, isSuccess } = useGetCarouselImagesQuery(undefined);
+  let toastId: string | number = 0;
+  if (!toastId) {
+    if (isLoading) {
+      toastId = toast.loading("...Carousel Loading", { id: toastId });
+    }
+    if (isSuccess) {
+      toast.success("Carousel fetched", { id: toastId });
+    }
+  }
   useEffect(() => {
     dispatch(setCarousel(data));
   }, [data, dispatch]);

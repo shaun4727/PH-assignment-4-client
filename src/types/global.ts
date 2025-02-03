@@ -91,3 +91,8 @@ export type TCustomerDetails = {
   customer_phone: number;
   customer_city: string;
 };
+
+export type UpdatePassword = {
+  oldPassword: string;
+  newPassword: string;
+};

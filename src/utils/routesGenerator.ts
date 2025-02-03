@@ -1,13 +1,7 @@
 import { TRoute, TUserPath } from "../types";
-import { navConstant } from "./userRole";
 
-export const routeGenerator = (items: TUserPath[], nav: string) => {
-  let navItems = items;
-  if (nav == navConstant.removeDashboard) {
-    navItems = items.filter((item) => item.name != "DASHBOARD");
-  }
-
-  const routes = navItems.reduce((acc: TRoute[], item, ind) => {
+export const routeGenerator = (items: TUserPath[]) => {
+  const routes = items.reduce((acc: TRoute[], item, ind) => {
     if (item.path && item.element) {
       if (ind == 0) {
         acc.push({

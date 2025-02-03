@@ -18,6 +18,7 @@ import { useState } from "react";
 import { useGetAllProductProductPageQuery } from "../redux/features/all-product/allProductManagement.api";
 import { TQueryParam, FilterQuery } from "../types";
 import { useFooterObserver } from "../components/layout/FooterObserverContext";
+import { toast } from "sonner";
 
 function AllProducts() {
   const { isFooterVisible } = useFooterObserver();
@@ -29,9 +30,20 @@ function AllProducts() {
     category: "",
     price: { $gte: priceRange[0], $lte: priceRange[1] },
   });
-  const { data } = useGetAllProductProductPageQuery(params);
+  const { data, isSuccess, isLoading } =
+    useGetAllProductProductPageQuery(params);
+  let toastId: string | number = 0;
+  if (!toastId) {
+    if (isLoading) {
+      toastId = toast.loading("...Products are Fetching", { id: toastId });
+    }
+    if (isSuccess) {
+      toast.success("Product fetched", { id: toastId });
+    }
+  }
 
   const onSearch: SearchProps["onSearch"] = (value) => {
+    toastId = toast.loading("...Searching", { id: toastId });
     const newParam = { name: "search", value };
     setParams((prevParams) => {
       const updatedParams = prevParams.some(
@@ -87,6 +99,7 @@ function AllProducts() {
   };
 
   const onFilterQuery = () => {
+    toast.loading("...Filtering ", { id: toastId });
     const newParam = {
       name: "filter",
       value: encodeURIComponent(JSON.stringify(filterValue)),

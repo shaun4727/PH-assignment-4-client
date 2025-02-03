@@ -15,6 +15,7 @@ import {
   UploadProps,
 } from "antd";
 import React, { useState } from "react";
+import { toast } from "sonner";
 import { useGetAllProductProductPageQuery } from "../../redux/features/all-product/allProductManagement.api";
 import { TBook } from "../../types";
 import { PlusOutlined, UploadOutlined } from "@ant-design/icons";
@@ -36,7 +37,7 @@ const MangeProducts: React.FC = () => {
     mode: false,
   });
 
-  const { data } = useGetAllProductProductPageQuery([
+  const { data, isFetching } = useGetAllProductProductPageQuery([
     { name: "dashboard", value: "dashboard" },
   ]);
 
@@ -70,7 +71,13 @@ const MangeProducts: React.FC = () => {
   };
   const deleteBook = async (data: Partial<TBook>) => {
     try {
-      await deleteProduct(data._id);
+      let toastId;
+      const res = await deleteProduct(data._id).unwrap();
+      if (res.statusCode == 200) {
+        toastId = toast.success(res.message);
+      } else {
+        toast.error(res.message, { id: toastId });
+      }
     } catch (err) {
       console.log(err);
     }
@@ -143,6 +150,8 @@ const MangeProducts: React.FC = () => {
   const onFinish: FormProps<Partial<TBook>>["onFinish"] = async (values) => {
     try {
       let fileName;
+      const text = editData.mode == true ? "Updating..." : "Creating...";
+      const toastId = toast.loading(text);
       if (typeof values.image != "string") {
         fileName = values?.image?.file;
         delete values["image"];
@@ -162,9 +171,20 @@ const MangeProducts: React.FC = () => {
         data: JSON.stringify(formValues),
       };
       if (editData.mode == true) {
-        await updateProduct(formData);
+        const res = await updateProduct(formData).unwrap();
+        if (res.statusCode == 200) {
+          toast.success(res.message, { id: toastId });
+        } else {
+          toast.error(res.message, { id: toastId });
+        }
       } else {
-        await createProduct(formData);
+        const res = await createProduct(formData).unwrap();
+
+        if (res.statusCode == 201) {
+          toast.success(res.message, { id: toastId });
+        } else {
+          toast.error(res.message, { id: toastId });
+        }
       }
       onClose();
     } catch (err) {
@@ -219,6 +239,7 @@ const MangeProducts: React.FC = () => {
       </Button>
       <Table<Partial<TBook>>
         columns={columns}
+        loading={isFetching}
         dataSource={dataTable as readonly TBook[]}
         rowKey="_id"
       />

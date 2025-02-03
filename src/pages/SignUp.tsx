@@ -11,6 +11,7 @@ import { setUser } from "../redux/features/auth/authSlice";
 import { TUser } from "../types";
 import { verifyToken } from "../utils/verifyToken";
 import { useAppDispatch } from "../redux/hook";
+import { toast } from "sonner";
 
 type FieldType = {
   email?: string;
@@ -27,6 +28,8 @@ const SignUpPage: React.FC = () => {
 
   const onFinish: FormProps<FieldType>["onFinish"] = async (values) => {
     try {
+      let toastId: string | number = 0;
+      toastId = toast.loading("...Loading", { id: toastId });
       if (values.password != values.confirmPassword) {
         setPasswordConfirm("Password and Confirm Password does not match!");
         return;
@@ -41,6 +44,7 @@ const SignUpPage: React.FC = () => {
       const res = await register(userInfo);
 
       if (res.data.statusCode == 201) {
+        toastId = toast.success(res.data.message, { id: toastId });
         const userData = {
           email: values.email,
           password: values.password,
@@ -49,6 +53,8 @@ const SignUpPage: React.FC = () => {
         const user = verifyToken(response.data.token) as TUser;
         dispatch(setUser({ user: user, token: response.data.token }));
         navigate(`/dashboard`);
+      } else {
+        toast.error(res.data.message, { id: toastId });
       }
     } catch (err) {
       console.log(err);

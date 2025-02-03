@@ -4,14 +4,23 @@ import "../../../assets/css/tabCard.css";
 import { NavLink } from "react-router-dom";
 import { useGetAllProductsQuery } from "../../../redux/features/home/homeManagement.api";
 import { TBook } from "../../../types";
+import { toast } from "sonner";
 
 interface TabCardProps {
   activeTabKey?: string;
 }
 const TabCard: React.FC<TabCardProps> = ({ activeTabKey }) => {
   const [allBooks, setAllBooks] = useState<TBook[]>([]);
-  const { data } = useGetAllProductsQuery(undefined);
-
+  const { data, isLoading, isSuccess } = useGetAllProductsQuery(undefined);
+  let toastId: string | number = 1;
+  if (toastId == 1) {
+    if (isLoading) {
+      toastId = toast.loading("...Tab Data Loading", { id: toastId });
+    }
+    if (isSuccess) {
+      toast.success("Tab data fetched", { id: toastId });
+    }
+  }
   useEffect(() => {
     const books = data?.filter((item) => item.category == activeTabKey);
     setAllBooks(books || []);
