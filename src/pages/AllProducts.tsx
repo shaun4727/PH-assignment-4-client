@@ -81,12 +81,13 @@ function AllProducts() {
             param.name == newParam.name ? newParam : param
           )
         : [...prevParams, newParam];
-
+      console.log("pagination", updatedParams);
       return updatedParams;
     });
   };
 
   const onFilterQuery = () => {
+    console.log("filter", filterValue);
     const newParam = {
       name: "filter",
       value: encodeURIComponent(JSON.stringify(filterValue)),
