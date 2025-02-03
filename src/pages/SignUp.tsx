@@ -7,7 +7,8 @@ import {
 } from "../redux/features/auth/authApi";
 
 import { NavLink, useNavigate } from "react-router-dom";
-import { TUser, setUser } from "../redux/features/auth/authSlice";
+import { setUser } from "../redux/features/auth/authSlice";
+import { TUser } from "../types";
 import { verifyToken } from "../utils/verifyToken";
 import { useAppDispatch } from "../redux/hook";
 

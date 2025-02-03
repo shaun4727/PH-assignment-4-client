@@ -41,7 +41,7 @@ function AllProducts() {
             param.name == newParam.name ? newParam : param
           )
         : [...prevParams, newParam];
-
+      console.log(updatedParams);
       return updatedParams;
     });
   };
@@ -220,7 +220,7 @@ function AllProducts() {
                     cover={
                       <img
                         alt="example"
-                        src={item.image}
+                        src={typeof item.image == "string" ? item.image : ""}
                         style={{ height: 140 }}
                       />
                     }
