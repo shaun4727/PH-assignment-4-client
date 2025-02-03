@@ -6,21 +6,15 @@ const productApi = baseApi.injectEndpoints({
       query: (formData) => ({
         url: `/products`,
         method: "POST",
-        body: {
-          file: formData.file,
-          data: formData.data,
-        },
+        body: formData,
       }),
       invalidatesTags: ["products"],
     }),
     updateProduct: builder.mutation({
       query: (formData) => ({
-        url: `/products/${formData.id}`,
+        url: `/products/${formData.get("id")}`,
         method: "PUT",
-        body: {
-          file: formData.file,
-          data: formData.data,
-        },
+        body: formData,
       }),
       invalidatesTags: ["products"],
     }),

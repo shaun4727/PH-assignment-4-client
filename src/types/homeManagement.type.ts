@@ -22,3 +22,12 @@ export type TBook = {
   reviews: string[];
   image: string | { file: RcFile };
 };
+export type imageChild = {
+  file: Record<string, unknown>;
+  fileList: RcFile[];
+};
+export type UploadImage = {
+  images: imageChild;
+};
+
+export type TUploadImagAndBook = Partial<TBook> & Partial<UploadImage>;

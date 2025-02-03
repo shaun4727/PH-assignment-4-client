@@ -12,7 +12,7 @@ Create a Book Shop application with user-friendly features, secure authenticatio
 
 Now, you are good to go....
 
-- **Deployed Link:** ph-assignment-4-client-book-shop.vercel.app
+- **Deployed Link:** [frontend](https://ph-assignment-4-client-book-shop.vercel.app)
 
 ## Technologies
 

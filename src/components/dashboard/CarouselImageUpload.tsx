@@ -11,22 +11,15 @@ import {
 import React, { useState } from "react";
 import "../../assets/css/UpdatePassword.css";
 import { UploadOutlined } from "@ant-design/icons";
-import { RcFile } from "antd/es/upload";
+// import { RcFile } from "antd/es/upload";
 import type { UploadRequestOption as RcCustomRequestOptions } from "rc-upload/lib/interface";
 import { useUploadCarouselImagesMutation } from "../../redux/features/carousel/carousel.api";
 import { toast } from "sonner";
+import { UploadImage } from "../../types";
 
 // import { useUpdatePsswordMutation } from "../../redux/features/auth/authApi";
 // import { logout } from "../../redux/features/auth/authSlice";
 // import { useAppDispatch } from "../../redux/hook";
-
-type imageChild = {
-  file: Record<string, unknown>;
-  fileList: RcFile[];
-};
-type UploadImage = {
-  images: imageChild;
-};
 
 const CarouselImageCom: React.FC = () => {
   const [form] = Form.useForm<Partial<UploadImage>>();

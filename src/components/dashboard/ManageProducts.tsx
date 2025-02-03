@@ -17,7 +17,7 @@ import {
 import React, { useState } from "react";
 import { toast } from "sonner";
 import { useGetAllProductProductPageQuery } from "../../redux/features/all-product/allProductManagement.api";
-import { TBook } from "../../types";
+import { TBook, TUploadImagAndBook } from "../../types";
 import { PlusOutlined, UploadOutlined } from "@ant-design/icons";
 import type { UploadRequestOption as RcCustomRequestOptions } from "rc-upload/lib/interface";
 import {
@@ -25,13 +25,14 @@ import {
   useDeleteProductMutation,
   useUpdateProductMutation,
 } from "../../redux/features/products/product.api";
-import { RcFile } from "antd/es/upload";
+import { UploadFile } from "antd/es/upload";
 
 let dataTable;
 const { Option } = Select;
 
 const MangeProducts: React.FC = () => {
-  const [form] = Form.useForm<Partial<TBook>>();
+  const [form] = Form.useForm<Partial<TUploadImagAndBook>>();
+  const [fileList, setFileList] = useState<UploadFile[]>();
   const [editData, setEditData] = useState<{ id: string; mode: boolean }>({
     id: "",
     mode: false,
@@ -45,6 +46,25 @@ const MangeProducts: React.FC = () => {
   const [updateProduct] = useUpdateProductMutation();
   const [deleteProduct] = useDeleteProductMutation();
 
+  const handleChange: UploadProps["onChange"] = (info) => {
+    let newFileList = [...info.fileList];
+
+    // 1. Limit the number of uploaded files
+    // Only to show two recent uploaded files, and old ones will be replaced by the new
+    newFileList = newFileList.slice(-2);
+
+    // 2. Read from response and show file link
+    newFileList = newFileList.map((file) => {
+      if (file.response) {
+        // Component will show file.url as link
+        file.url = file.response.url;
+      }
+      return file;
+    });
+
+    setFileList(newFileList);
+  };
+
   dataTable = data?.data || [];
   const [open, setOpen] = useState(false);
   const showDrawer = () => {
@@ -52,6 +72,8 @@ const MangeProducts: React.FC = () => {
   };
   const createNewProduct = () => {
     form.resetFields();
+    setFileList([]);
+    editData.id = "";
     showDrawer();
   };
   const onClose = () => {
@@ -67,6 +89,7 @@ const MangeProducts: React.FC = () => {
   const editFormData = (data: Partial<TBook>) => {
     setEditData({ id: data._id || "", mode: true });
     form.setFieldsValue(data);
+    setFileList([]);
     showDrawer();
   };
   const deleteBook = async (data: Partial<TBook>) => {
@@ -147,31 +170,41 @@ const MangeProducts: React.FC = () => {
       ),
     },
   ];
-  const onFinish: FormProps<Partial<TBook>>["onFinish"] = async (values) => {
+  const onFinish: FormProps<Partial<TUploadImagAndBook>>["onFinish"] = async (
+    values
+  ) => {
+    const text = editData.mode == true ? "Updating..." : "Creating...";
+    const toastId = toast.loading(text, { id: 5 });
     try {
-      let fileName;
-      const text = editData.mode == true ? "Updating..." : "Creating...";
-      const toastId = toast.loading(text);
-      if (typeof values.image != "string") {
-        fileName = values?.image?.file;
-        delete values["image"];
-      } else {
-        fileName = values.image;
-      }
+      // let fileName;
+
+      // if (typeof values.image != "string") {
+      //   fileName = values?.image?.file;
+      //   delete values["image"];
+      // } else {
+      //   fileName = values.image;
+      // }
+
+      const formData = new FormData();
+
+      fileList?.forEach((file) => {
+        if (file.originFileObj instanceof Blob) {
+          formData.append("file", file.originFileObj);
+        }
+      });
+
       const formValues = {
         ...values,
         price: Number(values.price),
         quantity: Number(values.quantity),
         inStock: true,
       };
+      formData.append("data", JSON.stringify(formValues));
+      formData.append("id", editData.id);
 
-      const formData = {
-        id: editData.id,
-        file: JSON.stringify(fileName),
-        data: JSON.stringify(formValues),
-      };
       if (editData.mode == true) {
         const res = await updateProduct(formData).unwrap();
+        console.log("res", res);
         if (res.statusCode == 200) {
           toast.success(res.message, { id: toastId });
         } else {
@@ -188,6 +221,7 @@ const MangeProducts: React.FC = () => {
       }
       onClose();
     } catch (err) {
+      toast.error("Failed Operation", { id: toastId });
       console.log(err);
     }
   };
@@ -199,10 +233,10 @@ const MangeProducts: React.FC = () => {
   };
 
   const fileUpload = async (options: RcCustomRequestOptions) => {
-    const { file, onSuccess } = options;
-    const formData = new FormData();
-
-    formData.append("file", file as RcFile);
+    const { onSuccess } = options;
+    if (fileList && fileList?.length > 1) {
+      fileList.splice(0, 1);
+    }
     try {
       if (onSuccess) {
         onSuccess("ok");
@@ -212,20 +246,10 @@ const MangeProducts: React.FC = () => {
     }
   };
 
-  const props: UploadProps = {
+  const props = {
     name: "file",
     customRequest: fileUpload,
-    fileList: [],
-    onChange(info) {
-      if (info.file.status !== "uploading") {
-        console.log(info.file, info.fileList);
-      }
-      if (info.file.status === "done") {
-        console.log(` file uploaded successfully`);
-      } else if (info.file.status === "error") {
-        console.log(` file upload failed.`);
-      }
-    },
+    onChange: handleChange,
   };
   return (
     <>
@@ -329,12 +353,8 @@ const MangeProducts: React.FC = () => {
               </Form.Item>
             </Col>
             <Col span={12}>
-              <Form.Item<TBook>
-                name="image"
-                label="Image"
-                rules={[{ required: true, message: "Please choose the image" }]}
-              >
-                <Upload {...props}>
+              <Form.Item<TBook> name="image" label="Image">
+                <Upload {...props} fileList={fileList}>
                   <Button icon={<UploadOutlined />}>Upload</Button>
                 </Upload>
               </Form.Item>
