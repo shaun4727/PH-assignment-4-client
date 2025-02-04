@@ -29,7 +29,7 @@ function AllProducts() {
   const [filterValue, setFilterValue] = useState<FilterQuery>({
     author: "",
     category: "",
-    inStock: false,
+    inStock: true,
     price: { $gte: priceRange[0], $lte: priceRange[1] },
   });
   const { data, isSuccess, isLoading } =
@@ -163,7 +163,9 @@ function AllProducts() {
                       />
                     </Form.Item>
                     <Form.Item label="In Stock">
-                      <Checkbox onChange={onChange}>Checkbox</Checkbox>
+                      <Checkbox defaultChecked onChange={onChange}>
+                        Checkbox
+                      </Checkbox>
                     </Form.Item>
                     <Form.Item>
                       <Button

@@ -44,6 +44,7 @@ const baseQueryWithRefreshToken: BaseQueryFn<
 
     const res = await fetch(
       "https://ph-assignment-4-server-1.onrender.com/api/auth/refresh-token",
+      // "http://localhost:3000/api/",
       {
         method: "POST",
         credentials: "include",

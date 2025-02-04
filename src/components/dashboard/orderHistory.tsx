@@ -11,6 +11,7 @@ import moment from "moment";
 import { TOrderSchemaWithId } from "../../types";
 import { CheckOutlined, DeleteOutlined, EditOutlined } from "@ant-design/icons";
 import { toast } from "sonner";
+import { USER_ROLE } from "../../utils/userRole";
 
 const OrderHistory: React.FC = () => {
   const user = useAppSelector((state) => state.auth.user);
@@ -118,7 +119,7 @@ const OrderHistory: React.FC = () => {
                           <span className="low-opacity">
                             Date:{" "}
                             <span className="date-value">
-                              {moment(order.createdAt).format(
+                              {moment(order?.createdAt).format(
                                 "MMMM Do YYYY, h:mm:ss a"
                               )}
                             </span>
@@ -128,7 +129,7 @@ const OrderHistory: React.FC = () => {
                           Ordered by{" "}
                           <span className="ordered-by">
                             {typeof order.user != "string"
-                              ? order.user.name
+                              ? order?.user?.name
                               : ""}
                           </span>
                         </p>
@@ -196,12 +197,12 @@ const OrderHistory: React.FC = () => {
                         BDT {orderDetails.totalPrice}
                       </span>
                     </h3>
-                    {!edit && (
+                    {!edit && user?.role == USER_ROLE.admin && (
                       <h3 className="edit-btn" onClick={() => toggleEdit()}>
                         <EditOutlined />
                       </h3>
                     )}
-                    {edit && (
+                    {edit && user?.role == USER_ROLE.admin && (
                       <h3
                         className="edit-btn"
                         onClick={() => submitOrder(orderDetails._id as string)}

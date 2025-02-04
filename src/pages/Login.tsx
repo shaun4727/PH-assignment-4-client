@@ -7,6 +7,7 @@ import { setUser } from "../redux/features/auth/authSlice";
 import { useAppDispatch, useAppSelector } from "../redux/hook";
 import { NavLink, useNavigate } from "react-router-dom";
 import { TUser } from "../types";
+import { toast } from "sonner";
 
 type FieldType = {
   email?: string;
@@ -25,17 +26,24 @@ const LoginPage: React.FC = () => {
   }, [token, navigate]);
 
   const onFinish: FormProps<FieldType>["onFinish"] = async (values) => {
+    let toastId: string | number = "login";
     try {
+      if (toastId == "login") {
+        toastId = toast.loading("...Loading", { id: toastId });
+      }
       const userInfo = {
         email: values.email,
         password: values.password,
       };
       const res = await login(userInfo).unwrap();
+
+      toast.success(res.data.message, { id: toastId });
       const user = verifyToken(res.data.token) as TUser;
       dispatch(setUser({ user: user, token: res.data.token }));
       navigate(`/dashboard`);
-    } catch (err) {
-      console.log(err);
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    } catch (err: any) {
+      toast.error(err.data?.message, { id: toastId });
     }
   };
 
