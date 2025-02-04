@@ -5,6 +5,8 @@ import { useCreateOrderMutation } from "../redux/features/order/order.api";
 import { useAppDispatch, useAppSelector } from "../redux/hook";
 import { emptyCart } from "../redux/features/products/productSlice";
 import { TUser } from "../types";
+import { toast } from "sonner";
+
 type FieldType = {
   customer_city: string;
   customer_phone: number;
@@ -19,6 +21,8 @@ const CheckoutPage: React.FC = () => {
   const [createOrder] = useCreateOrderMutation();
 
   const onFinish: FormProps<FieldType>["onFinish"] = async (values) => {
+    let toastId: string | number = 0;
+    toastId = toast.loading("...Placing order", { id: toastId });
     const products = cartItems.map((item) => ({
       product: item._id,
       quantity: item.qty || 1,
@@ -41,13 +45,16 @@ const CheckoutPage: React.FC = () => {
 
     try {
       const res = await createOrder(obj);
-      console.log(res);
+
       if (res.data.statusCode == 201) {
+        toast.success(res.data.message, { id: toastId });
         dispatch(emptyCart());
         window.location.href = res?.data?.data;
+      } else {
+        toast.error(res.data.message, { id: toastId });
       }
-      console.log(res);
     } catch (err) {
+      toast.error("Error Occured!", { id: toastId });
       console.log(err);
     }
   };
@@ -92,6 +99,7 @@ const CheckoutPage: React.FC = () => {
               </Form.Item>
               <Form.Item label={null}>
                 <Button
+                  disabled={Number(checkoutData?.total) === 0}
                   className="login-submit make-order"
                   htmlType="submit"
                   style={{ width: "40%", padding: "20px" }}
