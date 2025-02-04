@@ -10,9 +10,10 @@ import {
   Affix,
   Slider,
   Form,
+  Checkbox,
 } from "antd";
 const { Search } = Input;
-import type { GetProps } from "antd";
+import type { CheckboxProps, GetProps } from "antd";
 import { NavLink } from "react-router-dom";
 import { useState } from "react";
 import { useGetAllProductProductPageQuery } from "../redux/features/all-product/allProductManagement.api";
@@ -28,6 +29,7 @@ function AllProducts() {
   const [filterValue, setFilterValue] = useState<FilterQuery>({
     author: "",
     category: "",
+    inStock: false,
     price: { $gte: priceRange[0], $lte: priceRange[1] },
   });
   const { data, isSuccess, isLoading } =
@@ -117,6 +119,13 @@ function AllProducts() {
     });
   };
 
+  const onChange: CheckboxProps["onChange"] = (e) => {
+    setFilterValue((prevFilter) => ({
+      ...prevFilter,
+      inStock: e.target.checked || true,
+    }));
+  };
+
   const [form] = Form.useForm();
 
   return (
@@ -152,6 +161,9 @@ function AllProducts() {
                         placeholder="Enter category name"
                         onChange={onChangeCategory}
                       />
+                    </Form.Item>
+                    <Form.Item label="In Stock">
+                      <Checkbox onChange={onChange}>Checkbox</Checkbox>
                     </Form.Item>
                     <Form.Item>
                       <Button

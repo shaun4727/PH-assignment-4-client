@@ -22,6 +22,7 @@ import GetUsers from "../components/dashboard/GetUsers";
 
 import UpdatePasswordCom from "../components/dashboard/UpdatePassword";
 import CarouselImageCom from "../components/dashboard/CarouselImageUpload";
+import ScrollToTop from "../components/layout/ScrollToTop";
 
 export const userPaths = [
   {
@@ -93,7 +94,11 @@ export const paths = [
   {
     name: "ALL PRODUCTS",
     path: "all-products",
-    element: <AllProducts />,
+    element: (
+      <ScrollToTop>
+        <AllProducts />
+      </ScrollToTop>
+    ),
   },
   {
     name: "DASHBOARD",

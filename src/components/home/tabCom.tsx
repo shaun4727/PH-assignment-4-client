@@ -1,6 +1,7 @@
 import React, { useState } from "react";
-import { Card } from "antd";
+import { Button, Card } from "antd";
 import TabCard from "./tabChild/tabCard";
+import { NavLink } from "react-router-dom";
 
 const tabListNoTitle = [
   {
@@ -49,7 +50,16 @@ const TabCom: React.FC = () => {
               { activeTabKey }
             )}
         </div>
-
+        <div className="buy-section tab-view-all">
+          <Button
+            className="view-all"
+            style={{
+              width: "120px",
+            }}
+          >
+            <NavLink to={`/all-products`}>View All</NavLink>
+          </Button>
+        </div>
         {/* {contentListNoTitle[activeTabKey]} */}
       </Card>
     </>

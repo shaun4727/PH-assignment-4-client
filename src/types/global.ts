@@ -39,6 +39,7 @@ export type FilterQuery = {
   author?: string;
   category?: string;
   price?: Range;
+  inStock?: boolean;
 };
 
 export type TResponseRedux<T> = TResponse<T> & BaseQueryApi;
