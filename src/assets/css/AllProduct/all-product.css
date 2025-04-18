@@ -1,5 +1,8 @@
 .all-product-page {
-  margin: 15px 0;
+    margin: 15px 0;
+}
+.all-product-page .card-item{
+    min-height: 390px;
 }
 .product-header {
   display: flex;

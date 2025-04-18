@@ -1,7 +1,7 @@
 import React from "react";
 
 import type { MenuProps } from "antd";
-import { Layout, Menu } from "antd";
+import { ConfigProvider, Layout, Menu } from "antd";
 import "../../assets/navbar.css";
 import logo from "../../assets/images/logo.png";
 import { navbarGenerator } from "../../utils/navbarGenerator";
@@ -64,13 +64,30 @@ const Navbar: React.FC = () => {
         style={{ display: "flex", alignItems: "center" }}
       >
         <img src={logo} />
+        <ConfigProvider
+        theme={{
+            token: {
+                /* here is your global tokens */
+                colorPrimaryBorder: '#444'
+              },
+          components: {
+            Menu: {
+              itemHoverColor: 'var(--active-btn-border)',
+              itemColor: '#000',
+            //   popupBg: '#002855',
+            },
+          },
+        }}
+      >
         <Menu
           mode="horizontal"
+          className="nav-menu"
           onClick={onClick}
           defaultSelectedKeys={[document.title]}
           items={navItems}
           style={{ flex: 1, minWidth: 0, justifyContent: "end" }}
         />
+        </ConfigProvider>
       </Header>
     </>
   );

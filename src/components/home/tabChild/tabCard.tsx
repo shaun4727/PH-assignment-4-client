@@ -10,9 +10,9 @@ interface TabCardProps {
   activeTabKey?: string;
 }
 const TabCard: React.FC<TabCardProps> = ({ activeTabKey }) => {
-  console.log(activeTabKey);
-  const [allBooks, setAllBooks] = useState<TBook[]>([]);
-  const { data, isLoading, isSuccess } = useGetAllProductsQuery(undefined);
+
+    const { data, isLoading, isSuccess } = useGetAllProductsQuery(undefined);
+  const [allBooks, setAllBooks] = useState<TBook[] | null>(null);
   let toastId: string | number = 1;
   if (toastId == 1) {
     if (isLoading) {
@@ -24,12 +24,16 @@ const TabCard: React.FC<TabCardProps> = ({ activeTabKey }) => {
   }
   useEffect(() => {
     const books = data?.filter((item) => item.category == activeTabKey);
-    setAllBooks(books || []);
+    if(books){
+        setAllBooks(books);
+    }
   }, [activeTabKey, data]);
 
   return (
+    
     <Row gutter={[16, 16]}>
-      {allBooks?.map((item, index) => (
+        
+      {allBooks && allBooks.map((item, index) => (
         <Col
           xs={24}
           sm={24}
