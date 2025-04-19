@@ -58,3 +58,5 @@ Now, you are good to go....
 - Can Increase quantity of the products added to cart
 - Can make order.
 - Can see the order history in Dashboard
+
+**update `src/redux/api/baseApi.ts` with correct server api to get refresh token**

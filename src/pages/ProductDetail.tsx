@@ -18,13 +18,13 @@ const ProductDetail: React.FC = () => {
   };
   return (
     <div className="home-page">
-      <Row gutter={16}>
-        <Col className="gutter-row" span={8}>
+      <Row gutter={[16, 16]}>
+        <Col className="gutter-row"  xs={24} sm={24} md={10} lg={8} xl={8} >
           <div className="img-container">
             <img src={image} className="product-img" />
           </div>
         </Col>
-        <Col className="gutter-row" span={16}>
+        <Col className="gutter-row"  xs={24} sm={24} md={14} lg={16} xl={16}>
           <div className="product-details">
             <h2 className="book-name">{title}</h2>
             <p>
@@ -32,15 +32,17 @@ const ProductDetail: React.FC = () => {
             </p>
 
             <div className="price-category">
-              <h2 className="price">BDT {price}</h2>
-              <span className="category">{category}</span>
-              <p>
-                Stock: <span className="stock-qty">{quantity}</span>
-              </p>
-              <Button className="buy-now" onClick={addToCart}>
-                <ShoppingCartOutlined />
-                Add To Cart
-              </Button>
+                <div className="price-stock">              
+                    <h2 className="price">BDT {price}</h2>
+                    <span className="category">{category}</span>
+                    <p>
+                        Stock: <span className="stock-qty">{quantity}</span>
+                    </p>
+                </div>
+                <Button className="buy-now" onClick={addToCart}>
+                    <ShoppingCartOutlined />
+                    Add To Cart
+                </Button>
             </div>
 
             <p className="product-description">{description}</p>

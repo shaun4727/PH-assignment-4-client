@@ -43,7 +43,8 @@ const LoginPage: React.FC = () => {
       navigate(`/dashboard`);
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (err: any) {
-      toast.error(err.data?.message, { id: toastId });
+
+      toast.error(err?.data?.message, { id: toastId });
     }
   };
 

@@ -22,6 +22,7 @@
 .login-submit {
   background-color: var(--active-btn-border);
   color: #fff;
+  width: 100%;
 }
 .login-card {
   width: 100% !important;

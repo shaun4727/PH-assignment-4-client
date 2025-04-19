@@ -110,6 +110,7 @@ const MangeProducts: React.FC = () => {
       title: "Book",
       dataIndex: "book",
       key: "1",
+      fixed: 'left',
       render: (_, { title, author }) => (
         <div>
           <h4 style={{ margin: 0, padding: 0 }}>{title}</h4>by{" "}
@@ -262,10 +263,12 @@ const MangeProducts: React.FC = () => {
         Create New
       </Button>
       <Table<Partial<TBook>>
+        className="product-table"
         columns={columns}
         loading={isFetching}
         dataSource={dataTable as readonly TBook[]}
         rowKey="_id"
+        scroll={{ x: 'max-content' }}
       />
 
       <Drawer

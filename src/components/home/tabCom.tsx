@@ -34,7 +34,7 @@ const tabListNoTitle = [
 
     components: {
       Tabs: {
-        itemColor: 'var(--active-btn-border)',
+
         itemHoverColor: 'var(--active-btn-border)',
         itemSelectedColor: 'var(--active-btn-border)',
         inkBarColor: 'var(--active-btn-border)'

@@ -40,11 +40,11 @@ const baseQueryWithRefreshToken: BaseQueryFn<
   }
   if (result?.error?.status === 401) {
     //* Send Refresh
-    console.log("Sending refresh token");
+
 
     const res = await fetch(
-      "https://ph-assignment-4-server-1.onrender.com/api/auth/refresh-token",
-      // "http://localhost:3000/api/",
+    //   "https://ph-assignment-4-server-1.onrender.com/api/auth/refresh-token",
+      "http://localhost:3000/api/",
       {
         method: "POST",
         credentials: "include",

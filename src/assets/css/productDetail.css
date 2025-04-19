@@ -1,11 +1,14 @@
 .img-container {
+
   display: flex;
+  height: 100%;
   justify-content: flex-start;
+  align-items: center;
 }
 
 .product-img {
-  height: 300px;
-  width: 280px;
+  
+  width: 100%;
   border: none;
   border-radius: 0;
 }
@@ -20,11 +23,43 @@
   color: cadetblue;
 }
 
+.product-details{
+    line-height: 10px;
+}
+
 .product-details .product-description {
-  text-align: justify;
+    text-align: justify;
+}
+
+.product-details .price-category .price-stock{
+    display: flex;
+    gap: 15px;
+    align-items: center;
+}
+.product-details .price-category .price-stock .category{
+    height: 28px;
+    display: flex;
+    align-items: center;
 }
 .similar-title {
   margin-top: 125px;
   border-bottom: 1px solid var(--default-border-color);
   padding-bottom: 10px;
 }
+
+@media (max-width: 767px) { 
+    .product-img,.product-details{
+        width: 80%!important;
+        margin: 0 auto;
+    }
+}
+
+@media (max-width: 576px) {     
+    .product-img,.product-details{
+        width: 100%!important;
+    } 
+    .product-details .price-category .price-stock{
+        display:block;
+    }
+
+} 
